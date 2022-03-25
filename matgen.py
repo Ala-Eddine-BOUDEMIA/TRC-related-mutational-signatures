@@ -1,5 +1,5 @@
+import os
 from SigProfilerMatrixGenerator.scripts import SigProfilerMatrixGeneratorFunc as matGen
 
-matrices = matGen.SigProfilerMatrixGeneratorFunc("BLCA", "GRCh38", 
-	"/Users/aboudemi/Documents/Internship/Mutational_Profiles/BLCA/",
-	plot=True)
+matrices = matGen.SigProfilerMatrixGeneratorFunc(
+	"BRCA_No_UTR", "GRCh38", "Data/BRCA/No_UTR/", plot=True)
