@@ -1,5 +1,4 @@
-import os
+#!usr/bin/python3.8
 from SigProfilerMatrixGenerator.scripts import SigProfilerMatrixGeneratorFunc as matGen
 
-matrices = matGen.SigProfilerMatrixGeneratorFunc(
-	"BRCA_remain", "GRCh38", "Data/BRCA/Remain/", plot=True)
+matrices = matGen.SigProfilerMatrixGeneratorFunc("BLCA_TSS", "GRCh38", "Data/BLCA/TSS/", plot=True)
