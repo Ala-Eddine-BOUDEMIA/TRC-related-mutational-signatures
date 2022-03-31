@@ -90,11 +90,11 @@ if __name__ == '__main__':
 	index_tts = sort_indeces(l_tts, maf)
 	
 	maf_tss = maf.loc[index_tss]
-	maf_tss.to_csv("Data/BRCA/TSS/tss_5kb.maf", sep="\t", index=False)
+	maf_tss.to_csv("Data/BRCA/TSS/6kb/tss.maf", sep="\t", index=False)
 	
 	maf_tts = maf.loc[index_tts]
-	maf_tts.to_csv("Data/BRCA/TTS/tts_5kb.maf", sep="\t", index=False)
+	maf_tts.to_csv("Data/BRCA/TTS/6kb/tts.maf", sep="\t", index=False)
 		
 	index = list(set(index_tss + index_tts))
 	maf_not_utr = maf.drop(pd.Series(index), axis=0)
-	maf_not_utr.to_csv("Data/BRCA/Remain/remain_5kb.maf", sep="\t", index=False)
+	maf_not_utr.to_csv("Data/BRCA/Remain/6kb/remain.maf", sep="\t", index=False)
