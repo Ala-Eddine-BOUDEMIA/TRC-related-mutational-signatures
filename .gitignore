@@ -2,4 +2,5 @@
 *.db
 *.gtf
 *.gff3
+*.bw
 Data/
