@@ -1,0 +1,3 @@
+Samples	Stability	Total Mutations
+SBS96A	0.992	8391
+SBS96B	0.998	7922
