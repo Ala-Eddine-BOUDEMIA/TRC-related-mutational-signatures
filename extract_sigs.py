@@ -4,7 +4,7 @@ from multiprocessing import freeze_support
 if __name__ == '__main__':
 	freeze_support()
 
-	sig.sigProfilerExtractor("matrix", "Mutational_Signatures/BRCA/TSS/test", 
-		"Mutational_Profiles/BRCA/TSS/6kb/SBS/BRCA_TSS_6kb.SBS96.all", 
+	sig.sigProfilerExtractor("matrix", "Mutational_Signatures/BLCA/Remain/6kb", 
+		"Mutational_Profiles/BLCA/Remain/6kb/SBS/BLCA_Remain_6kb.SBS96.all", 
 		reference_genome = "GRCh38", opportunity_genome = "GRCh38", cpu = -1,
-		context_type = "96", minimum_signatures = 1, maximum_signatures = 4)
+		context_type = "96", minimum_signatures = 1, maximum_signatures = 7)
