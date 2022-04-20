@@ -74,7 +74,7 @@ def sort_indeces(ranges, maf):
 
 if __name__ == '__main__':
 	
-	maf = pd.read_csv("Data/BLCA/Original/blca.maf", header=5, sep="\t")
+	maf = pd.read_csv("Data/BRCA/Original/brca.maf", header=5, sep="\t")
 	maf = maf[maf["Variant_Type"]=="SNP"]
 
 	tss = pd.read_csv("Annotations/tss.tsv", header=0, sep="\t")
@@ -87,14 +87,24 @@ if __name__ == '__main__':
 	#l_tts = remove_overlaps(l_tts)
 
 	index_tss = sort_indeces(l_tss, maf)
+	print("Number of mutations on TSS: ", len(index_tss))
 	index_tts = sort_indeces(l_tts, maf)
+	print("Number of mutations on TTS: ", len(index_tts))
 	
+
 	maf_tss = maf.loc[index_tss]
-	maf_tss.to_csv("Data/BLCA/TSS/6kb/tss.maf", sep="\t", index=False)
-	
 	maf_tts = maf.loc[index_tts]
-	maf_tts.to_csv("Data/BLCA/TTS/6kb/tts.maf", sep="\t", index=False)
+	
+	intersection = maf_tss.index.intersection(maf_tts.index)
+	print("Number of mutations in common: ", len(intersection))
+	print("These mutations will be discarded")
+
+	maf_tss = maf_tss.drop(pd.Series(intersection), axis=0)
+	maf_tts = maf_tts.drop(pd.Series(intersection), axis=0)
+
+	maf_tss.to_csv("Data/BRCA/TSS/6kb/tss.maf", sep="\t", index=False)
+	maf_tts.to_csv("Data/BRCA/TTS/6kb/tts.maf", sep="\t", index=False)
 		
 	index = list(set(index_tss + index_tts))
 	maf_not_utr = maf.drop(pd.Series(index), axis=0)
-	maf_not_utr.to_csv("Data/BLCA/Remain/6kb/remain.maf", sep="\t", index=False)
+	maf_not_utr.to_csv("Data/BRCA/Remain/6kb/remain.maf", sep="\t", index=False)
