@@ -4,3 +4,4 @@
 *.gff3
 *.bw
 Data/
+__pycache__/

@@ -14,7 +14,7 @@ bwa="/bioinfo/local/build/bwa-0.7.5a/bin"
 cutadapt="/bioinfo/local/build/cutadapt-1.3/bin/"
 macs2="/bioinfo/local/build/MACS2_2.0.10/bin"
 
-export PATH="$Kronos:$kdi:$cutadapt:$bwa:$trimgalore:$fastqc:$macs2:$bowtie2:$bcl2fastq2:$subsetbam:$bismark:$samtools:$STAR:$anaconda3:$sratoolkit:$bamtools:$bedtools:$PATH"
+export PATH="$Kronos:$kdi:$cutadapt:$bwa:$trimgalore:$fastqc:$macs2:$bowtie2:$bcl2fastq2:$subsetbam:$bismark:$samtools:$STAR:$sratoolkit:$bamtools:$bedtools:$PATH"
 export PATH=/bioinfo/local/build/Centos/python/python-3.9.5/bin:$PATH
 export LD_LIBRARY_PATH=/bioinfo/local/build/Centos/python/python-3.9.5/lib64
 
