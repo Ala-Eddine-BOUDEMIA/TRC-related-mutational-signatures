@@ -12,14 +12,14 @@
 
 source /data/tmp/aboudemi/profile.sh
 
-mkdir /data/tmp/aboudemi/Mutational_Signatures/BLCA/Remain
+mkdir -p /data/tmp/aboudemi/Mutational_Signatures/BLCA/Remain
 mkdir /local/scratch/blca_remain_signatures
 
 cp /data/tmp/aboudemi/Data/ /local/scratch/blca_remain_signatures
 cp /data/tmp/aboudemi/*.py /local/scratch/blca_remain_signatures
 
 source env/bin/activate
-python /local/scratch/blca_remain_signatures/6_extract_sigs.py -c BLCA -r Remain
+python /local/scratch/blca_remain_signatures/6_extract_sigs.py --cancer_type BLCA --region Remain
 
 cp /local/scratch/blca_remain_profiles/Mutational_Signatures/BLCA/Remain /data/tmp/aboudemi/Mutational_Signatures/BLCA/Remain
 rm -r /local/scratch/blca_remain_signatures

@@ -12,14 +12,14 @@
 
 source /data/tmp/aboudemi/profile.sh
 
-mkdir /data/tmp/aboudemi/Mutational_Profiles/BRCA/Remain
-mkdir /local/scratch/brca_Remain_profiles
+mkdir -p /data/tmp/aboudemi/Mutational_Profiles/BRCA/Remain
+mkdir /local/scratch/brca_remain_profiles
 
-cp /data/tmp/aboudemi/Data/ /local/scratch/brca_Remain_profiles
-cp /data/tmp/aboudemi/*.py /local/scratch/brca_Remain_profiles
+cp /data/tmp/aboudemi/Data/ /local/scratch/brca_remain_profiles
+cp /data/tmp/aboudemi/*.py /local/scratch/brca_remain_profiles
 
 source env/bin/activate
-python /local/scratch/brca_Remain_profiles/5_matgen.py -c BRCA -r Remain
+python /local/scratch/brca_remain_profiles/5_matgen.py --cancer_type BRCA --region Remain
 
-cp /local/scratch/brca_Remain_profiles/Mutational_Profiles/BRCA/Remain /data/tmp/aboudemi/Mutational_Profiles/BRCA/Remain
-rm -r /local/scratch/brca_Remain_profiles
+cp /local/scratch/brca_remain_profiles/Data/BRCA/Remain/6kb/output/* /data/tmp/aboudemi/Mutational_Profiles/BRCA/Remain/
+rm -r /local/scratch/brca_remain_profiles

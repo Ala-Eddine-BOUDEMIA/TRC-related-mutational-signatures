@@ -12,14 +12,14 @@
 
 source /data/tmp/aboudemi/profile.sh
 
-mkdir /data/tmp/aboudemi/Mutational_Profiles/BRCA/TTS
+mkdir -p /data/tmp/aboudemi/Mutational_Profiles/BRCA/TTS
 mkdir /local/scratch/brca_tts_profiles
 
 cp /data/tmp/aboudemi/Data/ /local/scratch/brca_tts_profiles
 cp /data/tmp/aboudemi/*.py /local/scratch/brca_tts_profiles
 
 source env/bin/activate
-python /local/scratch/brca_tts_profiles/5_matgen.py -c BRCA -r TTS
+python /local/scratch/brca_tts_profiles/5_matgen.py --cancer_type BRCA --region TTS
 
-cp /local/scratch/brca_tts_profiles/Mutational_Profiles/BRCA/TTS /data/tmp/aboudemi/Mutational_Profiles/BRCA/TTS
+cp /local/scratch/brca_tts_profiles/Data/BRCA/TTS/6kb/output/* /data/tmp/aboudemi/Mutational_Profiles/BRCA/TTS/
 rm -r /local/scratch/brca_tts_profiles

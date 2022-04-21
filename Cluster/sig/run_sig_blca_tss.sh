@@ -12,14 +12,14 @@
 
 source /data/tmp/aboudemi/profile.sh
 
-mkdir /data/tmp/aboudemi/Mutational_Signatures/BLCA/TSS
+mkdir -p /data/tmp/aboudemi/Mutational_Signatures/BLCA/TSS
 mkdir /local/scratch/blca_TSS_signatures
 
 cp /data/tmp/aboudemi/Data/ /local/scratch/blca_TSS_signatures
 cp /data/tmp/aboudemi/*.py /local/scratch/blca_TSS_signatures
 
 source env/bin/activate
-python /local/scratch/blca_TSS_signatures/6_extract_sigs.py -c BLCA -r TSS
+python /local/scratch/blca_TSS_signatures/6_extract_sigs.py --cancer_type BLCA --region TSS
 
 cp /local/scratch/blca_TSS_profiles/Mutational_Signatures/BLCA/TSS /data/tmp/aboudemi/Mutational_Signatures/BLCA/TSS
 rm -r /local/scratch/blca_TSS_signatures
