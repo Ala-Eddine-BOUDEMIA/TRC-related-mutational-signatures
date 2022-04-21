@@ -15,11 +15,11 @@ source /data/tmp/aboudemi/profile.sh
 mkdir -p /data/tmp/aboudemi/Mutational_Signatures/BRCA/Remain
 mkdir /local/scratch/BRCA_Remain_signatures
 
-cp /data/tmp/aboudemi/Data/ /local/scratch/BRCA_Remain_signatures
+cp -r /data/tmp/aboudemi/Data/ /local/scratch/BRCA_Remain_signatures
 cp /data/tmp/aboudemi/*.py /local/scratch/BRCA_Remain_signatures
 
 source env/bin/activate
 python /local/scratch/BRCA_Remain_signatures/6_extract_sigs.py --cancer_type BRCA --region Remain
 
-cp /local/scratch/BRCA_Remain_profiles/Mutational_Signatures/BRCA/Remain /data/tmp/aboudemi/Mutational_Signatures/BRCA/Remain
+cp -r /local/scratch/BRCA_Remain_profiles/Mutational_Signatures/BRCA/Remain /data/tmp/aboudemi/Mutational_Signatures/BRCA/Remain
 rm -r /local/scratch/BRCA_Remain_signatures
