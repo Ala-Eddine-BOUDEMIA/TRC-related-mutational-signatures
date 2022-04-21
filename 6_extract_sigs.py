@@ -1,10 +1,16 @@
 from SigProfilerExtractor import sigpro as sig
 from multiprocessing import freeze_support
 
+import Config
+
 if __name__ == '__main__':
+
+	cancer = Config.args.cancer_type
+	region = Config.args.region
+
 	freeze_support()
 
-	sig.sigProfilerExtractor("matrix", "Mutational_Signatures/BLCA/Remain/6kb", 
-		"Mutational_Profiles/BLCA/Remain/6kb/SBS/BLCA_Remain_6kb.SBS96.all", 
+	sig.sigProfilerExtractor("matrix", "Mutational_Signatures/" + cancer + "/" + region + "/6kb", 
+		"Mutational_Profiles/" + cancer + "/Remain/6kb/SBS/" + cancer + "_" + region + "_6kb.SBS96.all", 
 		reference_genome = "GRCh38", opportunity_genome = "GRCh38", cpu = -1,
 		context_type = "96", minimum_signatures = 1, maximum_signatures = 7)

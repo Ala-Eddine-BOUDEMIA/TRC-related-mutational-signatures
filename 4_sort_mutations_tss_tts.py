@@ -74,11 +74,13 @@ def sort_indeces(ranges, maf):
 
 if __name__ == '__main__':
 	
-	maf = pd.read_csv("Data/BRCA/Original/brca.maf", header=5, sep="\t")
+	cancer = Config.args.cancer_type
+	maf = pd.read_csv("Data/" + cancer + "/Original/" + \
+		cancer.lower() + ".maf", header=5, sep="\t")
 	maf = maf[maf["Variant_Type"]=="SNP"]
 
-	tss = pd.read_csv("Annotations/tss.tsv", header=0, sep="\t")
-	tts = pd.read_csv("Annotations/tts.tsv", header=0, sep="\t")
+	tss = pd.read_csv(Config.args.tss, header=0, sep="\t")
+	tts = pd.read_csv(Config.args.tts, header=0, sep="\t")
 
 	l_tss = extract_ranges(tss)
 	l_tts = extract_ranges(tts)
@@ -102,9 +104,12 @@ if __name__ == '__main__':
 	maf_tss = maf_tss.drop(pd.Series(intersection), axis=0)
 	maf_tts = maf_tts.drop(pd.Series(intersection), axis=0)
 
-	maf_tss.to_csv("Data/BRCA/TSS/6kb/tss.maf", sep="\t", index=False)
-	maf_tts.to_csv("Data/BRCA/TTS/6kb/tts.maf", sep="\t", index=False)
+	maf_tss.to_csv("Data/" + cancer + "/TSS/6kb/tss.maf", 
+		sep="\t", index=False)
+	maf_tts.to_csv("Data/" + cancer + "/TTS/6kb/tts.maf", 
+		sep="\t", index=False)
 		
 	index = list(set(index_tss + index_tts))
 	maf_not_utr = maf.drop(pd.Series(index), axis=0)
-	maf_not_utr.to_csv("Data/BRCA/Remain/6kb/remain.maf", sep="\t", index=False)
+	maf_not_utr.to_csv("Data/" + cancer + "/Remain/6kb/remain.maf", 
+		sep="\t", index=False)

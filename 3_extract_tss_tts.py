@@ -1,10 +1,12 @@
 import pandas as pd 
 from itertools import islice
 
+import Config
+
 chromes = list(map(str,range(1,23)))+['X','Y']
 val = 3000
 tss, tts = [], []
-with open("Annotations/coding_genes_hg38_NOV_0kb.bed","r") as f:
+with open(Config.args.non_overlapping_genes,"r") as f:
 	for line in islice(f, 1, None):
 		l = line.split("\t")
 		if l[5].strip() == "+":
@@ -23,8 +25,8 @@ with open("Annotations/coding_genes_hg38_NOV_0kb.bed","r") as f:
 
 tss_df = pd.DataFrame(tss, 
 	columns = ["Chr", "Start", "End", "Name", "Score", "Strand"]).sort_values(["Chr","Start"])
-tss_df.to_csv("Annotations/tss.tsv", sep="\t", index=False)
+tss_df.to_csv(Config.args.tss, sep="\t", index=False)
 
 tts_df = pd.DataFrame(tts, 
 	columns = ["Chr", "Start", "End", "Name", "Score", "Strand"]).sort_values(["Chr","Start"])
-tts_df.to_csv("Annotations/tts.tsv", sep="\t", index=False)
+tts_df.to_csv(Config.args.tts, sep="\t", index=False)
