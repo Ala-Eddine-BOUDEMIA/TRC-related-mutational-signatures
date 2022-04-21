@@ -48,4 +48,14 @@ parser.add_argument("--tts",
 	default = Path("Annotations/tts.tsv"),
 	help = "All the TTS regions that were extracted from the coding genes")
 
+parser.add_argument("--cluster", 
+	type = bool,
+	default = True,
+	help = "If running on the HPC or not")
+
+parser.add_argument("--num_signatures", 
+	type = int,
+	default = 5,
+	help = "The maximum number of mutational signatures to be extracted")
+
 args = parser.parse_args()

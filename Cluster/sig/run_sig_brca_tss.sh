@@ -13,13 +13,13 @@
 source /data/tmp/aboudemi/profile.sh
 
 mkdir -p /data/tmp/aboudemi/Mutational_Signatures/BRCA/TSS
-mkdir /local/scratch/BRCA_TSS_signatures
+mkdir /local/scratch/mutational_signatures
 
-cp -r /data/tmp/aboudemi/Data/ /local/scratch/BRCA_TSS_signatures
-cp /data/tmp/aboudemi/*.py /local/scratch/BRCA_TSS_signatures
+cp -r /data/tmp/aboudemi/Mutational_Profiles /local/scratch/mutational_signatures
+cp /data/tmp/aboudemi/*.py /local/scratch/mutational_signatures
 
 source env/bin/activate
-python /local/scratch/BRCA_TSS_signatures/6_extract_sigs.py --cancer_type BRCA --region TSS
+python /local/scratch/mutational_signatures/6_extract_sigs.py --cancer_type BRCA --region TSS --num_signatures 4
 
-cp -r /local/scratch/BRCA_TSS_profiles/Mutational_Signatures/BRCA/TSS /data/tmp/aboudemi/Mutational_Signatures/BRCA/TSS
-rm -r /local/scratch/BRCA_TSS_signatures
+cp -r /local/scratch/mutational_signatures/Mutational_Signatures/BRCA/TSS /data/tmp/aboudemi/Mutational_Signatures/BRCA/TSS
+rm -r /local/scratch/mutational_signatures

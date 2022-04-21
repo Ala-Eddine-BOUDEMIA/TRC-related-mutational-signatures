@@ -13,13 +13,13 @@
 source /data/tmp/aboudemi/profile.sh
 
 mkdir -p /data/tmp/aboudemi/Mutational_Signatures/BLCA/Remain
-mkdir /local/scratch/blca_remain_signatures
+mkdir /local/scratch/mutational_signatures
 
-cp -r /data/tmp/aboudemi/Data/ /local/scratch/blca_remain_signatures
-cp /data/tmp/aboudemi/*.py /local/scratch/blca_remain_signatures
+cp -r /data/tmp/aboudemi/Mutational_Profiles /local/scratch/mutational_signatures
+cp /data/tmp/aboudemi/*.py /local/scratch/mutational_signatures
 
 source env/bin/activate
-python /local/scratch/blca_remain_signatures/6_extract_sigs.py --cancer_type BLCA --region Remain
+python /local/scratch/mutational_signatures/6_extract_sigs.py --cancer_type BLCA --region Remain --num_signatures 7
 
-cp -r /local/scratch/blca_remain_profiles/Mutational_Signatures/BLCA/Remain /data/tmp/aboudemi/Mutational_Signatures/BLCA/Remain
-rm -r /local/scratch/blca_remain_signatures
+cp -r /local/scratch/mutational_signatures/Mutational_Signatures/BLCA/Remain /data/tmp/aboudemi/Mutational_Signatures/BLCA/Remain
+rm -r /local/scratch/mutational_signatures
