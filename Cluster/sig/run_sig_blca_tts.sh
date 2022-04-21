@@ -10,16 +10,16 @@
 # Information
 #PBS -N sig_blca_TTS
 
-source /Data/tmp/aboudemi/profile.sh
+source /data/tmp/aboudemi/profile.sh
 
-mkdir /Data/tmp/aboudemi/Mutational_Signatures/BLCA/TTS
+mkdir /data/tmp/aboudemi/Mutational_Signatures/BLCA/TTS
 mkdir /local/scratch/blca_TTS_signatures
 
-cp /Data/tmp/aboudemi/Data/ /local/scratch/blca_TTS_signatures
-cp /Data/tmp/aboudemi/*.py /local/scratch/blca_TTS_signatures
+cp /data/tmp/aboudemi/Data/ /local/scratch/blca_TTS_signatures
+cp /data/tmp/aboudemi/*.py /local/scratch/blca_TTS_signatures
 
 source env/bin/activate
 python /local/scratch/blca_TTS_signatures/6_extract_sigs.py -c BLCA -r TTS
 
-cp /local/scratch/blca_TTS_profiles/Mutational_Signatures/BLCA/TTS /Data/tmp/aboudemi/Mutational_Signatures/BLCA/TTS
+cp /local/scratch/blca_TTS_profiles/Mutational_Signatures/BLCA/TTS /data/tmp/aboudemi/Mutational_Signatures/BLCA/TTS
 rm -r /local/scratch/blca_TTS_signatures

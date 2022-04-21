@@ -10,16 +10,16 @@
 # Information
 #PBS -N matgen_brca_Remain
 
-source /Data/tmp/aboudemi/profile.sh
+source /data/tmp/aboudemi/profile.sh
 
-mkdir /Data/tmp/aboudemi/Mutational_Profiles/BRCA/Remain
+mkdir /data/tmp/aboudemi/Mutational_Profiles/BRCA/Remain
 mkdir /local/scratch/brca_Remain_profiles
 
-cp /Data/tmp/aboudemi/Data/ /local/scratch/brca_Remain_profiles
-cp /Data/tmp/aboudemi/*.py /local/scratch/brca_Remain_profiles
+cp /data/tmp/aboudemi/Data/ /local/scratch/brca_Remain_profiles
+cp /data/tmp/aboudemi/*.py /local/scratch/brca_Remain_profiles
 
 source env/bin/activate
 python /local/scratch/brca_Remain_profiles/5_matgen.py -c BRCA -r Remain
 
-cp /local/scratch/brca_Remain_profiles/Mutational_Profiles/BRCA/Remain /Data/tmp/aboudemi/Mutational_Profiles/BRCA/Remain
+cp /local/scratch/brca_Remain_profiles/Mutational_Profiles/BRCA/Remain /data/tmp/aboudemi/Mutational_Profiles/BRCA/Remain
 rm -r /local/scratch/brca_Remain_profiles

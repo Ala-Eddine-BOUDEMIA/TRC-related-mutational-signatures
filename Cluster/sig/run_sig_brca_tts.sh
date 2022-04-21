@@ -10,16 +10,16 @@
 # Information
 #PBS -N sig_BRCA_TTS
 
-source /Data/tmp/aboudemi/profile.sh
+source /data/tmp/aboudemi/profile.sh
 
-mkdir /Data/tmp/aboudemi/Mutational_Signatures/BRCA/TTS
+mkdir /data/tmp/aboudemi/Mutational_Signatures/BRCA/TTS
 mkdir /local/scratch/BRCA_TTS_signatures
 
-cp /Data/tmp/aboudemi/Data/ /local/scratch/BRCA_TTS_signatures
-cp /Data/tmp/aboudemi/*.py /local/scratch/BRCA_TTS_signatures
+cp /data/tmp/aboudemi/Data/ /local/scratch/BRCA_TTS_signatures
+cp /data/tmp/aboudemi/*.py /local/scratch/BRCA_TTS_signatures
 
 source env/bin/activate
 python /local/scratch/BRCA_TTS_signatures/6_extract_sigs.py -c BRCA -r TTS
 
-cp /local/scratch/BRCA_TTS_profiles/Mutational_Signatures/BRCA/TTS /Data/tmp/aboudemi/Mutational_Signatures/BRCA/TTS
+cp /local/scratch/BRCA_TTS_profiles/Mutational_Signatures/BRCA/TTS /data/tmp/aboudemi/Mutational_Signatures/BRCA/TTS
 rm -r /local/scratch/BRCA_TTS_signatures

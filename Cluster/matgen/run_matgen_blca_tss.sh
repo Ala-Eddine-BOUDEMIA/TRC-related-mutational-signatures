@@ -10,16 +10,16 @@
 # Information
 #PBS -N matgen_blca_tss
 
-source /Data/tmp/aboudemi/profile.sh
+source /data/tmp/aboudemi/profile.sh
 
-mkdir /Data/tmp/aboudemi/Mutational_Profiles/BLCA/TSS
+mkdir /data/tmp/aboudemi/Mutational_Profiles/BLCA/TSS
 mkdir /local/scratch/blca_tss_profiles
 
-cp /Data/tmp/aboudemi/Data/ /local/scratch/blca_tss_profiles
-cp /Data/tmp/aboudemi/*.py /local/scratch/blca_tss_profiles
+cp /data/tmp/aboudemi/Data/ /local/scratch/blca_tss_profiles
+cp /data/tmp/aboudemi/*.py /local/scratch/blca_tss_profiles
 
 source env/bin/activate
 python /local/scratch/blca_tss_profiles/5_matgen.py -c BLCA -r TSS
 
-cp /local/scratch/blca_tss_profiles/Mutational_Profiles/BLCA/TSS /Data/tmp/aboudemi/Mutational_Profiles/BLCA/TSS
+cp /local/scratch/blca_tss_profiles/Mutational_Profiles/BLCA/TSS /data/tmp/aboudemi/Mutational_Profiles/BLCA/TSS
 rm -r /local/scratch/blca_tss_profiles
