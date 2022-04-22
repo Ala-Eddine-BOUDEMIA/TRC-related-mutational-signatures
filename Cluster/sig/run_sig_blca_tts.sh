@@ -8,7 +8,7 @@
 
 
 # Information
-#PBS -N sig_blca_TTS
+#PBS -N sig_blca_tts
 
 source /data/tmp/aboudemi/profile.sh
 
@@ -21,5 +21,5 @@ cp /data/tmp/aboudemi/*.py /local/scratch/mutational_signatures
 source env/bin/activate
 python /local/scratch/mutational_signatures/6_extract_sigs.py --cancer_type BLCA --region TTS --num_signatures 7
 
-cp -r /local/scratch/mutational_signatures/Mutational_Signatures/BLCA/TTS /data/tmp/aboudemi/Mutational_Signatures/BLCA/TTS
+cp -r /local/scratch/mutational_signatures/Mutational_Signatures/BLCA/TTS/* /data/tmp/aboudemi/Mutational_Signatures/BLCA/TTS
 rm -r /local/scratch/mutational_signatures

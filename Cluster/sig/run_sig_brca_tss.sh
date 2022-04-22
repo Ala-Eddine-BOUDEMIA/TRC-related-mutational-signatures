@@ -8,7 +8,7 @@
 
 
 # Information
-#PBS -N sig_BRCA_TSS
+#PBS -N sig_brca_tss
 
 source /data/tmp/aboudemi/profile.sh
 
@@ -21,5 +21,5 @@ cp /data/tmp/aboudemi/*.py /local/scratch/mutational_signatures
 source env/bin/activate
 python /local/scratch/mutational_signatures/6_extract_sigs.py --cancer_type BRCA --region TSS --num_signatures 4
 
-cp -r /local/scratch/mutational_signatures/Mutational_Signatures/BRCA/TSS /data/tmp/aboudemi/Mutational_Signatures/BRCA/TSS
+cp -r /local/scratch/mutational_signatures/Mutational_Signatures/BRCA/TSS/* /data/tmp/aboudemi/Mutational_Signatures/BRCA/TSS
 rm -r /local/scratch/mutational_signatures
