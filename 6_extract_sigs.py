@@ -10,8 +10,8 @@ if __name__ == '__main__':
 
 	if Config.args.cluster:
 		freeze_support()
-		sig.sigProfilerExtractor("matrix", "/local/scratch/mutational_signatures/Mutational_Signatures/" + cancer + "/" + region + "/6kb/", 
-			"/local/scratch/mutational_signatures/Mutational_Profiles/" + cancer + "/" + region + "/SBS/" + cancer + "_" + region + "_6kb.SBS96.all", 
+		sig.sigProfilerExtractor("matrix", "/local/scratch/mutational_signatures" + region + "/Mutational_Signatures/" + cancer + "/" + region + "/6kb/", 
+			"/local/scratch/mutational_signatures_" + region + "/Mutational_Profiles/" + cancer + "/" + region + "/SBS/" + cancer + "_" + region + "_6kb.SBS96.all", 
 			reference_genome = "GRCh38", opportunity_genome = "GRCh38", cpu = -1, context_type = "96", minimum_signatures = 1, 
 			maximum_signatures = Config.args.num_signatures)
 	else:
