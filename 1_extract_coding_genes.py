@@ -19,13 +19,14 @@ with open(Config.args.gff3, "r") as g:
 				gene_start = int(l[3])
 				gene_end = int(l[4])
 				gene_name = l[8].split(";")[3].split('=')[1]
+				gene_id = l[8].split(";")[1].split('=')[1].split(".")[0]
 				gene_type = l[8].split(";")[2].split('=')[1]
 				strand = l[6]
 				score = 0
 				if gene_type == "protein_coding":
-					genes.append([chrom, gene_start, gene_end, gene_name, score, strand])
+					genes.append([chrom, gene_start, gene_end, gene_name, score, strand, gene_id])
 		except:	
 			pass
 
-genes_df = pd.DataFrame(genes, columns=["Chr", "Start", "End", "Name", "Score", "Strand"])
+genes_df = pd.DataFrame(genes, columns=["Chr", "Start", "End", "Name", "Score", "Strand", "ID"])
 genes_df.to_csv(Config.args.all_coding_genes, sep="\t", index=False)

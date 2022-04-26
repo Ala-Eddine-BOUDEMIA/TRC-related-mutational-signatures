@@ -1,5 +1,7 @@
 import pandas as pd 
 
+import Config
+
 pd.set_option('display.max_rows', None)
 
 def extract_ranges(df):
