@@ -38,26 +38,6 @@ parser.add_argument("--non_overlapping_genes_minus",
 	default = Path("Annotations/coding_genes_minus_hg38_NOV_0kb.bed"),
 	help = "File containing only non-overlapping genes located on the - strand")
 
-parser.add_argument("--all_active_genes", 
-	type = Path,
-	default = Path("Annotations/all_active_genes.tsv"),
-	help = "File containing all the genes with average CPM superior to 0.1")
-
-parser.add_argument("--all_inactive_genes", 
-	type = Path,
-	default = Path("Annotations/all_inactive_genes.tsv"),
-	help = "File containing all the genes with average CPM inferior to 0.1")
-
-parser.add_argument("--active_coding_genes", 
-	type = Path,
-	default = Path("Annotations/active_coding_genes.tsv"),
-	help = "File containing the coding genes with average CPM superior to 0.1")
-
-parser.add_argument("--inactive_coding_genes", 
-	type = Path,
-	default = Path("Annotations/inactive_coding_genes.tsv"),
-	help = "File containing the coding genes with average CPM inferior to 0.1")
-
 parser.add_argument("--tss", 
 	type = Path,
 	default = Path("Annotations/tss.tsv"),

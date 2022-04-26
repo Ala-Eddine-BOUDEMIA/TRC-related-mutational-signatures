@@ -24,5 +24,5 @@ inactive_genes = cpm[cpm["Average_expression"] < 0.1].index
 fig = px.box(cpm, y="Average_expression")
 fig.show()
 
-pd.Series(active_genes).to_csv(Config.args.all_active_genes, sep = "\t")
-pd.Series(inactive_genes).to_csv(Config.args.all_inactive_genes, sep = "\t")
+pd.Series(active_genes).to_csv("Annotations/" + cancer + "/all_active_genes.tsv", sep = "\t")
+pd.Series(inactive_genes).to_csv("Annotations/" + cancer + "/all_inactive_genes.tsv", sep = "\t")
