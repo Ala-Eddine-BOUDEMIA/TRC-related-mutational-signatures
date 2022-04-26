@@ -11,7 +11,7 @@ for i in counts.index.to_list():
 
 # Sum of counts per sample
 counts_per_sample = counts.sum(axis = 0)
-print(counts_per_sample)
+#print(counts_per_sample)
 
 # cpm
 total = counts_per_sample.div(1e6)
@@ -19,8 +19,9 @@ cpm = counts.loc[:,:].div(total)
 print(cpm.sum(axis = 0))
 
 cpm['Average_expression'] = cpm.mean(axis = 1)
-active_genes = cpm[cpm["Average_expression"] > 0].index
-inactive_genes = cpm.drop(active_genes, inplace = True).index
+active_genes = cpm[cpm["Average_expression"] >= 0.5].index
+inactive_genes = cpm[cpm["Average_expression"] < 0.5].index
+print(active_genes)
 
 cpm.to_csv(Config.args.all_active_genes, sep = "\t")
 cpm.to_csv(Config.args.all_inactive_genes, sep = "\t")
