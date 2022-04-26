@@ -1,4 +1,5 @@
 import pandas as pd
+import plotly.express as px
 
 import Config 
 
@@ -11,17 +12,17 @@ for i in counts.index.to_list():
 
 # Sum of counts per sample
 counts_per_sample = counts.sum(axis = 0)
-#print(counts_per_sample)
 
 # cpm
 total = counts_per_sample.div(1e6)
 cpm = counts.loc[:,:].div(total) 
-print(cpm.sum(axis = 0))
 
 cpm['Average_expression'] = cpm.mean(axis = 1)
-active_genes = cpm[cpm["Average_expression"] >= 0.5].index
-inactive_genes = cpm[cpm["Average_expression"] < 0.5].index
-print(active_genes)
+active_genes = cpm[cpm["Average_expression"] >= 0.1].index
+inactive_genes = cpm[cpm["Average_expression"] < 0.1].index
 
-cpm.to_csv(Config.args.all_active_genes, sep = "\t")
-cpm.to_csv(Config.args.all_inactive_genes, sep = "\t")
+fig = px.box(cpm, y="Average_expression")
+fig.show()
+
+pd.Series(active_genes).to_csv(Config.args.all_active_genes, sep = "\t")
+pd.Series(inactive_genes).to_csv(Config.args.all_inactive_genes, sep = "\t")
