@@ -4,7 +4,7 @@ import Config
 
 pd.set_option('display.max_rows', None)
 
-genes = pd.read_csv(Config.args.all_coding_genes, header=0, sep="\t")
+genes = pd.read_csv(Config.args.protein_coding_genes, header=0, sep="\t")
 genes = genes.sort_values(["Strand", "Chr", "Start", "End"]).reset_index(drop=True)
 genes["Length"] = genes["End"] - genes["Start"]
 

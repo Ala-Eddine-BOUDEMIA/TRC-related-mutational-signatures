@@ -29,4 +29,4 @@ with open(Config.args.gff3, "r") as g:
 			pass
 
 genes_df = pd.DataFrame(genes, columns=["Chr", "Start", "End", "Name", "Score", "Strand", "ID"])
-genes_df.to_csv(Config.args.all_coding_genes, sep="\t", index=False)
+genes_df.to_csv(Config.args.protein_coding_genes, sep="\t", index=False)
