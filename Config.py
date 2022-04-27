@@ -15,37 +15,37 @@ parser.add_argument("--region",
 
 parser.add_argument("--gff3", 
 	type = Path,
-	default = Path("Annotations/grch38.gff3"),
+	default = Path("Annotations/gff3/grch38.gff3"),
 	help = "GRCh38 gff3 annotation file")
 
 parser.add_argument("--all_coding_genes", 
 	type = Path,
-	default = Path("Annotations/coding_genes_hg38.bed"),
+	default = Path("Annotations/General/coding_genes/coding_genes_hg38.bed"),
 	help = "All coding genes extracted from the gff3 file")
 
 parser.add_argument("--non_overlapping_genes", 
 	type = Path,
-	default = Path("Annotations/coding_genes_hg38_NOV_0kb.bed"),
+	default = Path("Annotations/General/non_overlapping_coding_genes/coding_genes_hg38_NOV_0kb.bed"),
 	help = "File containing only non-overlapping genes")
 
 parser.add_argument("--non_overlapping_genes_plus", 
 	type = Path,
-	default = Path("Annotations/coding_genes_plus_hg38_NOV_0kb.bed"),
+	default = Path("Annotations/General/non_overlapping_coding_genes/coding_genes_plus_hg38_NOV_0kb.bed"),
 	help = "File containing only non-overlapping genes located on the + strand")
 
 parser.add_argument("--non_overlapping_genes_minus", 
 	type = Path,
-	default = Path("Annotations/coding_genes_minus_hg38_NOV_0kb.bed"),
+	default = Path("Annotations/General/non_overlapping_coding_genes/coding_genes_minus_hg38_NOV_0kb.bed"),
 	help = "File containing only non-overlapping genes located on the - strand")
 
 parser.add_argument("--tss", 
 	type = Path,
-	default = Path("Annotations/tss.tsv"),
+	default = Path("Annotations/General/TSS-TTS/tss.tsv"),
 	help = "All the TSS regions that were extracted from the coding genes")
 
 parser.add_argument("--tts", 
 	type = Path,
-	default = Path("Annotations/tts.tsv"),
+	default = Path("Annotations/General/TSS-TTS/tts.tsv"),
 	help = "All the TTS regions that were extracted from the coding genes")
 
 parser.add_argument("--cluster", 
