@@ -13,8 +13,8 @@ active_genes = pd.read_csv("Annotations/" + cancer + "/all_active_genes.tsv",
 inactive_genes = pd.read_csv("Annotations/" + cancer + "/all_inactive_genes.tsv", 
 	index_col="0", sep="\t")
 
-active_coding_genes = active_genes.join(coding_genes, how="inner").drop("Unnamed: 0", axis=1)
-inactive_coding_genes = inactive_genes.join(coding_genes, how="inner").drop("Unnamed: 0", axis=1)
+active_coding_genes = active_genes.join(coding_genes, how="inner")
+inactive_coding_genes = inactive_genes.join(coding_genes, how="inner")
 
 print("Number of active genes: ", len(active_coding_genes))
 print("Number of inactive genes: ", len(inactive_coding_genes))
