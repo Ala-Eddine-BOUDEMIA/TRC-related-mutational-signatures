@@ -81,7 +81,7 @@ if __name__ == '__main__':
 		cancer.lower() + ".maf", header=5, sep="\t")
 	maf = maf[maf["Variant_Type"]=="SNP"]
 
-	if Config.args.is_cancer_specific:
+	if Config.args.is_cancer_specific == "True":
 		for tss_path, tts_path, g_type in zip([Config.args.active_tss, Config.args.inactive_tss], 
 			[Config.args.active_tts, Config.args.inactive_tts], ["active", "inactive"]):
 		
@@ -118,7 +118,8 @@ if __name__ == '__main__':
 			maf_not_utr = maf.drop(pd.Series(index), axis=0)
 			maf_not_utr.to_csv("Data/" + cancer + "/Remain/" + g_type + "/remain.maf", 
 				sep="\t", index=False)
-	else:
+			
+	elif Config.args.is_cancer_specific == "False"::
 		tss = pd.read_csv(Config.args.tss, header=0, sep="\t")
 		tts = pd.read_csv(Config.args.tts, header=0, sep="\t")
 

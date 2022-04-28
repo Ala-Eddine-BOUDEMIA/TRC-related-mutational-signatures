@@ -2,7 +2,6 @@ import pandas as pd
 
 import Config
 
-
 def get_genes_by_type(cancer, active_genes_path, inactive_genes_path):
 	
 	coding_genes = pd.read_csv(Config.args.non_overlapping_genes, 

@@ -35,7 +35,7 @@ def extract_regions(genes, tss_path, tts_path):
 
 if __name__ == '__main__':
 
-	if Config.args.is_cancer_specific:
+	if Config.args.is_cancer_specific == "True":
 		extract_regions(
 		genes = Config.args.active_genes,
 		tss_path = Config.args.active_tss, 
@@ -46,7 +46,7 @@ if __name__ == '__main__':
 		tss_path = Config.args.inactive_tss, 
 		tts_path = Config.args.inactive_tts)
 		
-	else:
+	elif Config.args.is_cancer_specific == "False":
 		extract_regions(
 		genes = Config.args.non_overlapping_genes,
 		tss_path = Config.args.tss, tts_path = Config.args.tts)

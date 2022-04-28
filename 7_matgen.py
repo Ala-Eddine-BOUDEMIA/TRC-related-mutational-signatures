@@ -4,12 +4,12 @@ import Config
 
 cancer = Config.args.cancer_type
 region = Config.args.region
-if Config.args.is_active:
+if Config.args.is_active == "True":
 	state = "active"
-else:
+elif Config.args.is_active == "False" :
 	state = "incative"
 
-if Config.args.is_cancer_specific == False:
+if Config.args.is_cancer_specific == "False":
 	state = "6kb"
 
 if Config.args.cluster:

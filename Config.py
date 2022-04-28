@@ -9,12 +9,12 @@ parser.add_argument("--cancer_type",
 	help = "Dataset to use")
 
 parser.add_argument("--is_cancer_specific", 
-	type = bool,
+	type = str,
 	default = "True",
 	help = "If True will extract TSS and TTS based on active and inactive genes, else it will extract from all the genes")
 
 parser.add_argument("--is_active", 
-	type = bool,
+	type = str,
 	default = "True",
 	help = "If True will set the paths to the directory that should contain results from active genes")
 
