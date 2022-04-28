@@ -94,8 +94,8 @@ parser.add_argument("--inactive_tts",
 	help = "All the TTS regions that were extracted from the inactive coding genes")
 
 parser.add_argument("--cluster", 
-	type = bool,
-	default = True,
+	type = str,
+	default = "True",
 	help = "If running on the HPC or not")
 
 parser.add_argument("--num_signatures", 
