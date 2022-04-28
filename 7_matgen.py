@@ -7,7 +7,7 @@ region = Config.args.region
 if Config.args.is_active == "True":
 	state = "active"
 elif Config.args.is_active == "False" :
-	state = "incative"
+	state = "inactive"
 
 if Config.args.is_cancer_specific == "False":
 	state = "6kb"
