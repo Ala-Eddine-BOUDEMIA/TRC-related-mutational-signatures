@@ -9,7 +9,7 @@ if Config.args.is_active:
 else:
 	state = "incative"
 
-if !Config.args.is_cancer_specific:
+if Config.args.is_cancer_specific == False:
 	state = "6kb"
 
 if Config.args.cluster:
