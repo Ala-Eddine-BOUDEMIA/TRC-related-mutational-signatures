@@ -35,27 +35,27 @@ parser.add_argument("--protein_coding_genes",
 
 parser.add_argument("--non_overlapping_genes", 
 	type = Path,
-	default = Path("Annotations/coding_genes_hg38_NOV_0kb.bed"),
+	default = Path("Annotations/hg38/non-overlapping_coding_genes/coding_genes_hg38_NOV_0kb.bed"),
 	help = "File containing only non-overlapping genes")
 
 parser.add_argument("--non_overlapping_genes_plus", 
 	type = Path,
-	default = Path("Annotations/coding_genes_plus_hg38_NOV_0kb.bed"),
+	default = Path("Annotations/hg38/non-overlapping_coding_genes/coding_genes_plus_hg38_NOV_0kb.bed"),
 	help = "File containing only non-overlapping genes located on the + strand")
 
 parser.add_argument("--non_overlapping_genes_minus", 
 	type = Path,
-	default = Path("Annotations/coding_genes_minus_hg38_NOV_0kb.bed"),
+	default = Path("Annotations/hg38/non-overlapping_coding_genes/coding_genes_minus_hg38_NOV_0kb.bed"),
 	help = "File containing only non-overlapping genes located on the - strand")
 
 parser.add_argument("--tss", 
 	type = Path,
-	default = Path("Annotations/tss.tsv"),
+	default = Path("Annotations/hg38/TSS/tss.tsv"),
 	help = "All the TSS regions that were extracted from the coding genes")
 
 parser.add_argument("--tts", 
 	type = Path,
-	default = Path("Annotations/tts.tsv"),
+	default = Path("Annotations/hg38/TTS/tts.tsv"),
 	help = "All the TTS regions that were extracted from the coding genes")
 
 parser.add_argument("--active_genes", 
@@ -86,7 +86,7 @@ parser.add_argument("--active_tts",
 parser.add_argument("--inactive_tts", 
 	type = Path,
 	default = Path("Annotations/" + parser.parse_args().cancer_type + "/TTS/inactive_tts.tsv"),
-	help = "All the TTS regions that were extracted from the inactive coding genes"
+	help = "All the TTS regions that were extracted from the inactive coding genes")
 
 parser.add_argument("--cluster", 
 	type = bool,
