@@ -28,6 +28,11 @@ parser.add_argument("--region",
 	default = "TSS",
 	help = "TSS, TTS or Remain")
 
+parser.add_argument("--cluster", 
+	type = str,
+	default = "True",
+	help = "If running on the HPC or not")
+
 parser.add_argument("--meta",
 	type = Path,
 	default = Path("Annotations/Metadata/TCGA/TCGA.tsv"),
@@ -97,10 +102,5 @@ parser.add_argument("--inactive_tts",
 	type = Path,
 	default = Path("Annotations/" + parser.parse_args().cancer_type + "/TTS/inactive_tts.tsv"),
 	help = "All the TTS regions that were extracted from the inactive coding genes")
-
-parser.add_argument("--cluster", 
-	type = str,
-	default = "True",
-	help = "If running on the HPC or not")
 
 args = parser.parse_args()
