@@ -27,7 +27,7 @@ if __name__ == '__main__':
 
 			"/local/scratch/mutational_signatures_" \
 			+ cancer.lower() + "_" + region.lower() + "_" + state \
-			+ "/Mutational_Profiles/" + cancer + "/" + region \
+			+ "/Mutational_Profiles/" + cancer + "/" + region + "/" + state \
 			+ "/SBS/" + cancer + "_" + region + "_" + state + ".SBS96.all", 
 			
 			reference_genome = "GRCh38", opportunity_genome = "GRCh38",
