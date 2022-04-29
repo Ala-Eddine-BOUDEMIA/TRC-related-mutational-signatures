@@ -8,6 +8,11 @@ parser.add_argument("--cancer_type",
 	default = "BRCA",
 	help = "Dataset to use")
 
+parser.add_argument("--num_signatures", 
+	type = int,
+	default = 5,
+	help = "The maximum number of mutational signatures to be extracted")
+
 parser.add_argument("--is_cancer_specific", 
 	type = str,
 	default = "True",
@@ -97,10 +102,5 @@ parser.add_argument("--cluster",
 	type = str,
 	default = "True",
 	help = "If running on the HPC or not")
-
-parser.add_argument("--num_signatures", 
-	type = int,
-	default = 5,
-	help = "The maximum number of mutational signatures to be extracted")
 
 args = parser.parse_args()
