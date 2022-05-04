@@ -4,7 +4,7 @@ file = pd.read_csv("Data/BRCA/Original/brca.maf", header=5, sep="\t")
 
 tcga = pd.read_csv("Annotations/Metadata/TCGA/TCGA.tsv", sep="\t")
 tcga = tcga[tcga['gdc_cases.samples.sample_type']=="Primary Tumor"]
-tcga = tcga[tcga['gdc_cases.project.primary_site']=="Bladder"]
+tcga = tcga[tcga['gdc_cases.project.primary_site']=="Breast"]
 
 rna = tcga['gdc_cases.submitter_id'].str.split('-').str[2]
 maf = file['Tumor_Sample_Barcode'].str.split("-").str[2]
