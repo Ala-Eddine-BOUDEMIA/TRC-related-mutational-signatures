@@ -119,7 +119,7 @@ if __name__ == '__main__':
 			maf_not_utr.to_csv("Data/" + cancer + "/Remain/" + g_type + "/remain.maf", 
 				sep="\t", index=False)
 			
-	elif Config.args.is_cancer_specific == "False"::
+	elif Config.args.is_cancer_specific == "False":
 		tss = pd.read_csv(Config.args.tss, header=0, sep="\t")
 		tts = pd.read_csv(Config.args.tts, header=0, sep="\t")
 

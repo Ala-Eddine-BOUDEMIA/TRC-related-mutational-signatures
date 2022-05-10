@@ -19,7 +19,10 @@ def cpm(cancer, metadata):
     counts = counts.T
 
     for i in counts.index.to_list():
-        counts.rename(index = {i: i.split('.')[0]}, inplace = True)
+        if len(i.split(".")[1]) <= 2:
+            counts.rename(index = {i: i.split('.')[0]}, inplace = True)
+        else:
+            pass
 
     # Sum of counts per sample
     counts_per_sample = counts.sum(axis = 0)

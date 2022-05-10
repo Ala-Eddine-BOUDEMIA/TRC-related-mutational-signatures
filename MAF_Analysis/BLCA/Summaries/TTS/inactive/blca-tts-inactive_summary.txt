@@ -2,9 +2,9 @@ ID	summary	Mean	Median
 NCBI_Build	GRCh38	NA	NA
 Center	BI	NA	NA
 Samples	398	NA	NA
-nGenes	1162	NA	NA
-Missense_Mutation	2285	5.741	4
+nGenes	1155	NA	NA
+Missense_Mutation	2276	5.719	4
 Nonsense_Mutation	195	0.49	0
 Nonstop_Mutation	12	0.03	0
 Splice_Site	26	0.065	0
-total	2518	6.327	4
+total	2509	6.304	4
