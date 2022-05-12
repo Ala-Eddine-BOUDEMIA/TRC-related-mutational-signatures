@@ -34,14 +34,17 @@ def cpm(cancer, metadata):
 
     active_genes = cpm[cpm["Average_expression"] >= 1].index
     inactive_genes = cpm[cpm["Average_expression"] < 1].index
-
+    """
     fig = px.box(cpm, y="Average_expression")
     fig.show()
     fig = px.box(np.log10(cpm+1), y="Average_expression")
     fig.show()
-
+    """
     pd.Series(active_genes).to_csv("Annotations/" + cancer + "/Active_genes/all_active_genes.tsv", sep = "\t", index = False)
     pd.Series(inactive_genes).to_csv("Annotations/" + cancer + "/Inactive_genes/all_inactive_genes.tsv", sep = "\t", index = False)
+
+    cpm.to_csv("Data/" + cancer + "/Transcriptomics/" + cancer.lower() + "_normalized.tsv", sep = "\t", 
+        float_format='%.3f')
 
 if __name__ == '__main__':
     
