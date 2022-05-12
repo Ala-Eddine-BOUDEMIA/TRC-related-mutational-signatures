@@ -23,21 +23,21 @@ def correlations():
 	tss_mutated_genes = pd.read_csv("MAF_Analysis/" + cancer + "/Summaries/TSS/" + \
 		state + "/" + cancer.lower() + "-tss-" + state + "_geneSummary.txt", 
 		index_col = "Hugo_Symbol", sep = "\t")
-	tss_mutated_genes = tss_mutated_genes.sort_values("total", ascending = False)
-	tss_mutated_genes = tss_mutated_genes.iloc[:50,:]
+	# tss_mutated_genes = tss_mutated_genes.sort_values("total", ascending = False)
+	# tss_mutated_genes = tss_mutated_genes.iloc[:50,:]
 	tss_mutated_genes["Region"] = "TSS"
 
 	tts_mutated_genes = pd.read_csv("MAF_Analysis/" + cancer + "/Summaries/TTS/" + \
 		state + "/" + cancer.lower() + "-tts-" + state + "_geneSummary.txt",
 		index_col = "Hugo_Symbol", sep = "\t")
-	tts_mutated_genes = tts_mutated_genes.sort_values("total", ascending = False)
-	tts_mutated_genes = tts_mutated_genes.iloc[:50,:]
+	# tts_mutated_genes = tts_mutated_genes.sort_values("total", ascending = False)
+	# tts_mutated_genes = tts_mutated_genes.iloc[:50,:]
 	tts_mutated_genes["Region"] = "TTS"
 
 	tss_tts_mutated_genes = pd.read_csv("MAF_Analysis/" + cancer + \
 		"/Summaries/Genes-Mutated-TSS-TTS/" + state + "/TSS-TTS-" + state + ".tsv",
 		index_col = "Hugo_Symbol", sep = "\t")
-	tss_tts_mutated_genes = tss_tts_mutated_genes.iloc[:50,:]
+	# tss_tts_mutated_genes = tss_tts_mutated_genes.iloc[:50,:]
 
 	genes =  pd.read_csv(Config.args.non_overlapping_genes, index_col = "Name", 
 		sep = "\t")
@@ -87,11 +87,11 @@ def clustermap(matrix, region, name, v_min, v_max):
 	    vmin = v_min, vmax = v_max, 
 	    cmap = sns.color_palette("vlag", as_cmap = True), 
 	    metric = "euclidean",
-	    xticklabels = False, yticklabels = True,
+	    xticklabels = False, yticklabels = False,
 	    method = "ward", figsize = [25, 25])
 
 	g.savefig("Expression_Profiles/" + cancer + "/" + region + "/" + state + \
-		"/" + name + "_50.png", dpi = 300)
+		"/" + name + ".png", dpi = 300)
 	plt.close('all')
 
 if __name__ == '__main__':
