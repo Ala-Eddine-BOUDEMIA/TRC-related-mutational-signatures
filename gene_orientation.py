@@ -6,6 +6,8 @@ import Config
 #pd.set_option('display.max_rows', None)
 #pd.set_option('display.max_columns', None)
 
+cancer = Config.args.cancer_type
+
 genes = pd.read_csv(Config.args.non_overlapping_genes, index_col = "ID", sep = "\t")
 
 chromes = list(map(str,range(1,23)))+['X','Y']
@@ -31,30 +33,32 @@ df.columns = ["Chr", "Start_gene1", "End_gene1", "Name_gene1",
 	"Strand_gene2", "Length_gene2", "Distance"]
 df = df.drop(["Chr_gene2", "Score_gene2", "Score_gene1"], axis = 1)
 
-df["Direction"] = df["Strand_gene1"] + df["Strand_gene2"]
-df["Region_Type"] = str
-df["Mutation_Region_Start"] = 0
-df["Mutation_Region_End"] = 0
+df["Orientation"] = df["Strand_gene1"] + df["Strand_gene2"]
+df["Region_Type"], df["Name"] = str, str
+df["Start"], df["End"] = 0, 0
+df["TSS_gene1"], df["TSS_gene2"] = 0, 0
+df["TTS_gene1"], df["TTS_gene2"] = 0, 0
 
 selected = []
 for i in df.index:
+	df.at[i, "Name"] = df.iloc[i]["Name_gene1"] + "-" + df.iloc[i]["Name_gene2"]
 	if df.iloc[i]["Distance"] <= 10000:
-		if df.iloc[i]["Direction"] == "+-":
+		if df.iloc[i]["Orientation"] == "+-":
 			df.at[i, "Region_Type"] = "C"
-			df.at[i, "Mutation_Region_Start"] = df.iloc[i]["End_gene1"] 
-			df.at[i, "Mutation_Region_End"] = df.iloc[i]["End_gene2"]
-		elif df.iloc[i]["Direction"] == "-+":
+			df.at[i, "Start"] = df.iloc[i]["End_gene1"] 
+			df.at[i, "End"] = df.iloc[i]["End_gene2"]
+		elif df.iloc[i]["Orientation"] == "-+":
 			df.at[i, "Region_Type"] = "D"
-			df.at[i, "Mutation_Region_Start"] = df.iloc[i]["Start_gene1"] 
-			df.at[i, "Mutation_Region_End"] = df.iloc[i]["Start_gene2"]
-		elif df.iloc[i]["Direction"] == "++":
+			df.at[i, "Start"] = df.iloc[i]["Start_gene1"] 
+			df.at[i, "End"] = df.iloc[i]["Start_gene2"]
+		elif df.iloc[i]["Orientation"] == "++":
 			df.at[i, "Region_Type"] = "T"
-			df.at[i, "Mutation_Region_Start"] = df.iloc[i]["End_gene1"] 
-			df.at[i, "Mutation_Region_End"] = df.iloc[i]["Start_gene2"]
-		elif df.iloc[i]["Direction"] == "--":
+			df.at[i, "Start"] = df.iloc[i]["End_gene1"] 
+			df.at[i, "End"] = df.iloc[i]["Start_gene2"]
+		elif df.iloc[i]["Orientation"] == "--":
 			df.at[i, "Region_Type"] = "T"
-			df.at[i, "Mutation_Region_Start"] = df.iloc[i]["Start_gene1"] 
-			df.at[i, "Mutation_Region_End"] = df.iloc[i]["End_gene2"]
+			df.at[i, "Start"] = df.iloc[i]["Start_gene1"] 
+			df.at[i, "End"] = df.iloc[i]["End_gene2"]
 
 		if df.iloc[i]["Name_gene1"] not in selected:
 			selected.append(df.iloc[i]["Name_gene1"])
@@ -63,4 +67,14 @@ for i in df.index:
 	else:
 		df.at[i, "Region_Type"] = "A"
 
-print(df)
+df = df[["Chr", "Start", "End", "Name", "Region_Type", "Orientation"]]
+conv = df[df["Region_Type"] == "C"]
+div = df[df["Region_Type"] == "D"]
+tand = df[df["Region_Type"] == "T"]
+
+conv.to_csv(Config.args.conv, 
+	sep = "\t", index = False)
+div.to_csv(Config.args.div, 
+	sep = "\t", index = False)
+tand.to_csv(Config.args.tand, 
+	sep = "\t", index = False)

@@ -103,4 +103,19 @@ parser.add_argument("--inactive_tts",
 	default = Path("Annotations/" + parser.parse_args().cancer_type + "/TTS/inactive_tts.tsv"),
 	help = "All the TTS regions that were extracted from the inactive coding genes")
 
+parser.add_argument("--conv", 
+	type = Path,
+	default = Path("Annotations/hg38/Convergent_genes/conv_genes.tsv"),
+	help = "Gene pairs in a convergent orientation")
+
+parser.add_argument("--div", 
+	type = Path,
+	default = Path("Annotations/hg38/Divergent_genes/div_genes.tsv"),
+	help = "Gene pairs in a divergent orientation")
+
+parser.add_argument("--tand", 
+	type = Path,
+	default = Path("Annotations/hg38/Tandem_genes/co_genes.tsv"),
+	help = "Gene pairs in a co-directional orientation")
+
 args = parser.parse_args()
