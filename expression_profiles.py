@@ -10,31 +10,32 @@ import Config
 
 sys.setrecursionlimit(1000000)
 
-cancer = Config.args.cancer_type
+dataset = Config.args.dataset
 
-if Config.args.is_active == "True":
-		state = "active"
-elif Config.args.is_active == "False" :
+if Config.args.is_active == True:
+	state = "active"
+elif Config.args.is_active == False :
 	state = "inactive"
-if Config.args.is_cancer_specific == "False":
+
+if Config.args.is_global == True:
 	state = "6kb"
 
 def correlations():
-	tss_mutated_genes = pd.read_csv("MAF_Analysis/" + cancer + "/Summaries/TSS/" + \
-		state + "/" + cancer.lower() + "-tss-" + state + "_geneSummary.txt", 
+	tss_mutated_genes = pd.read_csv("MAF_Analysis/" + dataset + "/Summaries/TSS/" + \
+		state + "/" + dataset.lower() + "-tss-" + state + "_geneSummary.txt", 
 		index_col = "Hugo_Symbol", sep = "\t")
 	# tss_mutated_genes = tss_mutated_genes.sort_values("total", ascending = False)
 	# tss_mutated_genes = tss_mutated_genes.iloc[:50,:]
 	tss_mutated_genes["Region"] = "TSS"
 
-	tts_mutated_genes = pd.read_csv("MAF_Analysis/" + cancer + "/Summaries/TTS/" + \
-		state + "/" + cancer.lower() + "-tts-" + state + "_geneSummary.txt",
+	tts_mutated_genes = pd.read_csv("MAF_Analysis/" + dataset + "/Summaries/TTS/" + \
+		state + "/" + dataset.lower() + "-tts-" + state + "_geneSummary.txt",
 		index_col = "Hugo_Symbol", sep = "\t")
 	# tts_mutated_genes = tts_mutated_genes.sort_values("total", ascending = False)
 	# tts_mutated_genes = tts_mutated_genes.iloc[:50,:]
 	tts_mutated_genes["Region"] = "TTS"
 
-	tss_tts_mutated_genes = pd.read_csv("MAF_Analysis/" + cancer + \
+	tss_tts_mutated_genes = pd.read_csv("MAF_Analysis/" + dataset + \
 		"/Summaries/Genes-Mutated-TSS-TTS/" + state + "/TSS-TTS-" + state + ".tsv",
 		index_col = "Hugo_Symbol", sep = "\t")
 	# tss_tts_mutated_genes = tss_tts_mutated_genes.iloc[:50,:]
@@ -51,7 +52,7 @@ def correlations():
 	tss_tts_mutated_genes = tss_tts_mutated_genes[tss_tts_mutated_genes["ID"].notna()]
 	tss_tts_mutated_genes = tss_tts_mutated_genes.set_index("ID")
 
-	counts = pd.read_csv("Data/" + cancer + "/Transcriptomics/" + cancer.lower() + \
+	counts = pd.read_csv("Data/" + dataset + "/Transcriptomics/" + dataset.lower() + \
 		"_normalized.tsv", index_col = 0, sep = "\t")
 
 	counts_to_analyze = counts.join(genes_to_analyze["Region"], how = "left")
@@ -70,13 +71,13 @@ def correlations():
 	tts_counts_log2 = tts_log2.T.corr()
 	tss_tts_counts_log2 = tss_tts_log2.T.corr()
 
-	tss_counts_log2.to_csv("Data/" + cancer + "/Correlations/TSS/" + state + \
+	tss_counts_log2.to_csv("Data/" + dataset + "/Correlations/TSS/" + state + \
 		"/tss_cor_top50.tsv", sep = "\t", float_format='%.3f')
 
-	tts_counts_log2.to_csv("Data/" + cancer + "/Correlations/TTS/" + state + \
+	tts_counts_log2.to_csv("Data/" + dataset + "/Correlations/TTS/" + state + \
 		"/tts_cor_top50.tsv", sep = "\t", float_format='%.3f')
 
-	tss_tts_counts_log2.to_csv("Data/" + cancer + "/Correlations/TSS-TTS/" + \
+	tss_tts_counts_log2.to_csv("Data/" + dataset + "/Correlations/TSS-TTS/" + \
 		state + "/tss_tts_cor_50.tsv", sep = "\t", float_format='%.3f')
 
 	return(tss_log2, tss_counts_log2, tts_log2, 
@@ -90,11 +91,12 @@ def clustermap(matrix, region, name, v_min, v_max):
 	    xticklabels = False, yticklabels = False,
 	    method = "ward", figsize = [25, 25])
 
-	g.savefig("Expression_Profiles/" + cancer + "/" + region + "/" + state + \
+	g.savefig("Expression_Profiles/" + dataset + "/" + region + "/" + state + \
 		"/" + name + ".png", dpi = 300)
 	plt.close('all')
 
 if __name__ == '__main__':
+	
 	tss_log2, tss_cor, tts_log2, tts_cor, tss_tts_log2, tss_tts_cor = correlations()
 	regions = ["TSS", "TTS", "TSS-TTS"]
 

@@ -76,52 +76,29 @@ def sort_indeces(ranges, maf):
 
 if __name__ == '__main__':
 	
-	cancer = Config.args.cancer_type
-	maf = pd.read_csv("Data/" + cancer + "/Original/" + \
-		cancer.lower() + ".maf", header=5, sep="\t")
+	dataset = Config.args.dataset
+	if Config.args.is_active == True:
+		state = "active"
+		tss_paths = [Config.args.active_tss]
+		tts_paths = [Config.args.active_tts]
+	elif Config.args.is_active == False :
+		state = "inactive"
+		tss_paths = [Config.args.inactive_tss]
+		tts_paths = [Config.args.inactive_tts]
+
+	if Config.args.is_global == True:
+		state = "6kb"
+		tss_path = [Config.args.tss]
+		tts_path = [Config.args.tts]
+
+	maf = pd.read_csv("Data/" + dataset + "/Original/" + \
+		dataset.lower() + ".maf", header=5, sep="\t")
 	maf = maf[maf["Variant_Type"]=="SNP"]
 
-	if Config.args.is_cancer_specific == "True":
-		for tss_path, tts_path, g_type in zip([Config.args.active_tss, Config.args.inactive_tss], 
-			[Config.args.active_tts, Config.args.inactive_tts], ["active", "inactive"]):
-		
-			tss = pd.read_csv(tss_path, header=0, sep="\t")
-			tts = pd.read_csv(tts_path, header=0, sep="\t")
-
-			l_tss = extract_ranges(tss)
-			l_tts = extract_ranges(tts)
-
-			#l_tss = remove_overlaps(l_tss)
-			#l_tts = remove_overlaps(l_tts)
-
-			index_tss = sort_indeces(l_tss, maf)
-			print("Number of mutations on TSS: ", len(index_tss))
-			index_tts = sort_indeces(l_tts, maf)
-			print("Number of mutations on TTS: ", len(index_tts))
-
-			maf_tss = maf.loc[index_tss]
-			maf_tts = maf.loc[index_tts]
-			
-			intersection = maf_tss.index.intersection(maf_tts.index)
-			print("Number of mutations in common: ", len(intersection))
-			print("These mutations will be discarded")
-
-			maf_tss = maf_tss.drop(pd.Series(intersection), axis=0)
-			maf_tts = maf_tts.drop(pd.Series(intersection), axis=0)
-
-			maf_tss.to_csv("Data/" + cancer + "/TSS/" + g_type + "/tss.maf", 
-				sep="\t", index=False)
-			maf_tts.to_csv("Data/" + cancer + "/TTS/" + g_type + "/tts.maf", 
-				sep="\t", index=False)
-				
-			index = list(set(index_tss + index_tts))
-			maf_not_utr = maf.drop(pd.Series(index), axis=0)
-			maf_not_utr.to_csv("Data/" + cancer + "/Remain/" + g_type + "/remain.maf", 
-				sep="\t", index=False)
-			
-	elif Config.args.is_cancer_specific == "False":
-		tss = pd.read_csv(Config.args.tss, header=0, sep="\t")
-		tts = pd.read_csv(Config.args.tts, header=0, sep="\t")
+	for tss_path, tts_path in zip(tss_paths, tts_paths):
+	
+		tss = pd.read_csv(tss_path, header=0, sep="\t")
+		tts = pd.read_csv(tts_path, header=0, sep="\t")
 
 		l_tss = extract_ranges(tss)
 		l_tts = extract_ranges(tts)
@@ -144,12 +121,12 @@ if __name__ == '__main__':
 		maf_tss = maf_tss.drop(pd.Series(intersection), axis=0)
 		maf_tts = maf_tts.drop(pd.Series(intersection), axis=0)
 
-		maf_tss.to_csv("Data/" + cancer + "/TSS/6kb/tss.maf", 
+		maf_tss.to_csv("Data/" + dataset + "/TSS/" + state + "/tss.maf", 
 			sep="\t", index=False)
-		maf_tts.to_csv("Data/" + cancer + "/TTS/6kb/tts.maf", 
+		maf_tts.to_csv("Data/" + dataset + "/TTS/" + state + "/tts.maf", 
 			sep="\t", index=False)
 			
 		index = list(set(index_tss + index_tts))
 		maf_not_utr = maf.drop(pd.Series(index), axis=0)
-		maf_not_utr.to_csv("Data/" + cancer + "/Remain/6kb/remain.maf", 
+		maf_not_utr.to_csv("Data/" + dataset + "/Remain/" + state + "/remain.maf", 
 			sep="\t", index=False)

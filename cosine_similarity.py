@@ -3,14 +3,14 @@ import numpy as np
 
 import Config 
 
-cancer = Config.args.cancer_type
+dataset = Config.args.dataset
 
-if Config.args.is_active == "True":
+if Config.args.is_active == True:
     state = "active"
-elif Config.args.is_active == "False" :
+elif Config.args.is_active == False :
     state = "inactive"
 
-if Config.args.is_cancer_specific == "False":
+if Config.args.is_global == True:
     state = "6kb"
 
 def cos_sim(a, b):
@@ -37,8 +37,8 @@ def cos_sim(a, b):
 
 if __name__ == '__main__':
     
-    tss = pd.read_csv("Mutational_Signatures/" + cancer +"/TSS/" + state + "/SBS96/Suggested_Solution/SBS96_De-Novo_Solution/Signatures/SBS96_De-Novo_Signatures.txt", sep = "\t")
-    tts = pd.read_csv("Mutational_Signatures/" + cancer +"/TTS/" + state + "/SBS96/Suggested_Solution/SBS96_De-Novo_Solution/Signatures/SBS96_De-Novo_Signatures.txt", sep = "\t")
+    tss = pd.read_csv("Mutational_Signatures/" + dataset +"/TSS/" + state + "/SBS96/Suggested_Solution/SBS96_De-Novo_Solution/Signatures/SBS96_De-Novo_Signatures.txt", sep = "\t")
+    tts = pd.read_csv("Mutational_Signatures/" + dataset +"/TTS/" + state + "/SBS96/Suggested_Solution/SBS96_De-Novo_Solution/Signatures/SBS96_De-Novo_Signatures.txt", sep = "\t")
 
     tss_sig = tss["SBS96B"]
     tts_sig = tts["SBS96A"]

@@ -19,7 +19,7 @@ cp -r /data/tmp/aboudemi/Mutational_Profiles /local/scratch/mutational_signature
 cp /data/tmp/aboudemi/*.py /local/scratch/mutational_signatures_brca_tss_active
 
 source env/bin/activate
-python /local/scratch/mutational_signatures_brca_tss_active/8_extract_sigs.py --cancer_type BRCA --region TSS --num_signatures 4
+python /local/scratch/mutational_signatures_brca_tss_active/8_extract_sigs.py --cancer_type BRCA --region TSS --num_signatures 4 --is_active --cluster
 
 cp -r /local/scratch/mutational_signatures_brca_tss_active/Mutational_Signatures/BRCA/TSS/active/* /data/tmp/aboudemi/Mutational_Signatures/BRCA/TSS/active/
 rm -r /local/scratch/mutational_signatures_brca_tss_active

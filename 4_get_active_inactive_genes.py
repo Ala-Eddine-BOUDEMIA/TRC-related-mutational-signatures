@@ -2,15 +2,15 @@ import pandas as pd
 
 import Config
 
-def get_genes_by_type(cancer, active_genes_path, inactive_genes_path):
+def get_genes_by_type(dataset, active_genes_path, inactive_genes_path):
 	
 	coding_genes = pd.read_csv(Config.args.non_overlapping_genes, 
 		index_col="ID", sep="\t")
 
-	active_genes = pd.read_csv("Annotations/" + cancer + "/Active_genes/all_active_genes.tsv", 
+	active_genes = pd.read_csv("Annotations/" + dataset + "/Active_genes/all_active_genes.tsv", 
 		index_col="0", sep="\t")
 
-	inactive_genes = pd.read_csv("Annotations/" + cancer + "/Inactive_genes/all_inactive_genes.tsv", 
+	inactive_genes = pd.read_csv("Annotations/" + dataset + "/Inactive_genes/all_inactive_genes.tsv", 
 		index_col="0", sep="\t")
 
 	active_coding_genes = active_genes.join(coding_genes, how="inner")
@@ -25,6 +25,6 @@ def get_genes_by_type(cancer, active_genes_path, inactive_genes_path):
 if __name__ == '__main__':
 	
 	get_genes_by_type(
-		cancer = Config.args.cancer_type,
+		dataset = Config.args.dataset,
 		active_genes_path = Config.args.active_genes,
 		inactive_genes_path = Config.args.inactive_genes)

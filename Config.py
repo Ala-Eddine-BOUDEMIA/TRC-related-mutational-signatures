@@ -3,7 +3,7 @@ from pathlib import Path
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument("--cancer_type", 
+parser.add_argument("--dataset", 
 	type = str,
 	default = "BRCA",
 	help = "Dataset to use")
@@ -13,25 +13,25 @@ parser.add_argument("--num_signatures",
 	default = 5,
 	help = "The maximum number of mutational signatures to be extracted")
 
-parser.add_argument("--is_cancer_specific", 
-	type = str,
-	default = "True",
-	help = "If True will extract TSS and TTS based on active and inactive genes, else it will extract from all the genes")
+parser.add_argument("--is_global", 
+	action = "store_true",
+	default = False,
+	help = "If True will work on the global dataset otherwise it will consider active or inactive genes")
 
 parser.add_argument("--is_active", 
-	type = str,
-	default = "True",
+	action = "store_true",
+	default = False,
 	help = "If True will set the paths to the directory that should contain results from active genes")
+
+parser.add_argument("--cluster", 
+	action = "store_true",
+	default = False,
+	help = "If running on the HPC or not")
 
 parser.add_argument("--region",
 	type = str,
 	default = "TSS",
 	help = "TSS, TTS or Remain")
-
-parser.add_argument("--cluster", 
-	type = str,
-	default = "True",
-	help = "If running on the HPC or not")
 
 parser.add_argument("--meta",
 	type = Path,
@@ -75,32 +75,32 @@ parser.add_argument("--tts",
 
 parser.add_argument("--active_genes", 
 	type = Path,
-	default = Path("Annotations/" + parser.parse_args().cancer_type + "/Active_genes/active_coding_genes.tsv"),
+	default = Path("Annotations/" + parser.parse_args().dataset + "/Active_genes/active_coding_genes.tsv"),
 	help = "The protein coding genes that are active in a given cancer type")
 
 parser.add_argument("--inactive_genes", 
 	type = Path,
-	default = Path("Annotations/" + parser.parse_args().cancer_type + "/Inactive_genes/inactive_coding_genes.tsv"),
+	default = Path("Annotations/" + parser.parse_args().dataset + "/Inactive_genes/inactive_coding_genes.tsv"),
 	help = "The protein coding genes that are inactive in a given cancer type")
 
 parser.add_argument("--active_tss", 
 	type = Path,
-	default = Path("Annotations/" + parser.parse_args().cancer_type + "/TSS/active_tss.tsv"),
+	default = Path("Annotations/" + parser.parse_args().dataset + "/TSS/active_tss.tsv"),
 	help = "All the TSS regions that were extracted from the active coding genes")
 
 parser.add_argument("--inactive_tss", 
 	type = Path,
-	default = Path("Annotations/" + parser.parse_args().cancer_type + "/TSS/inactive_tss.tsv"),
+	default = Path("Annotations/" + parser.parse_args().dataset + "/TSS/inactive_tss.tsv"),
 	help = "All the TSS regions that were extracted from the inactive coding genes")
 
 parser.add_argument("--active_tts", 
 	type = Path,
-	default = Path("Annotations/" + parser.parse_args().cancer_type + "/TTS/active_tts.tsv"),
+	default = Path("Annotations/" + parser.parse_args().dataset + "/TTS/active_tts.tsv"),
 	help = "All the TTS regions that were extracted from the active coding genes")
 
 parser.add_argument("--inactive_tts", 
 	type = Path,
-	default = Path("Annotations/" + parser.parse_args().cancer_type + "/TTS/inactive_tts.tsv"),
+	default = Path("Annotations/" + parser.parse_args().dataset + "/TTS/inactive_tts.tsv"),
 	help = "All the TTS regions that were extracted from the inactive coding genes")
 
 parser.add_argument("--conv", 

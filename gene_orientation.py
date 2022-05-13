@@ -6,8 +6,6 @@ import Config
 #pd.set_option('display.max_rows', None)
 #pd.set_option('display.max_columns', None)
 
-cancer = Config.args.cancer_type
-
 genes = pd.read_csv(Config.args.non_overlapping_genes, index_col = "ID", sep = "\t")
 
 chromes = list(map(str,range(1,23)))+['X','Y']

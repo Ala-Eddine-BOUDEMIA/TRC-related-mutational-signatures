@@ -4,9 +4,9 @@ import plotly.express as px
 
 import Config 
 
-def cpm(cancer, metadata):
+def cpm(dataset, metadata):
 
-    counts = pd.read_csv("Data/" + cancer + "/Transcriptomics/" + cancer.lower() + ".tsv", 
+    counts = pd.read_csv("Data/" + dataset + "/Transcriptomics/" + dataset.lower() + ".tsv", 
         header = 0, index_col = 0, sep = '\t')
 
     metadata = pd.read_csv(metadata, header=0, index_col="gdc_file_id", sep="\t")
@@ -40,14 +40,14 @@ def cpm(cancer, metadata):
     fig = px.box(np.log10(cpm+1), y="Average_expression")
     fig.show()
     """
-    pd.Series(active_genes).to_csv("Annotations/" + cancer + "/Active_genes/all_active_genes.tsv", sep = "\t", index = False)
-    pd.Series(inactive_genes).to_csv("Annotations/" + cancer + "/Inactive_genes/all_inactive_genes.tsv", sep = "\t", index = False)
+    pd.Series(active_genes).to_csv("Annotations/" + dataset + "/Active_genes/all_active_genes.tsv", sep = "\t", index = False)
+    pd.Series(inactive_genes).to_csv("Annotations/" + dataset + "/Inactive_genes/all_inactive_genes.tsv", sep = "\t", index = False)
 
-    cpm.to_csv("Data/" + cancer + "/Transcriptomics/" + cancer.lower() + "_normalized.tsv", sep = "\t", 
+    cpm.to_csv("Data/" + dataset + "/Transcriptomics/" + dataset.lower() + "_normalized.tsv", sep = "\t", 
         float_format='%.3f')
 
 if __name__ == '__main__':
     
     cpm(
-        cancer = Config.args.cancer_type,
+        dataset = Config.args.dataset,
         metadata = Config.args.meta)
