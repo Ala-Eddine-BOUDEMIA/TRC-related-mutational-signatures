@@ -43,25 +43,20 @@ for i in df.index:
 	if df.iloc[i]["Distance"] <= 10000:
 		if df.iloc[i]["Orientation"] == "+-":
 			df.at[i, "Region_Type"] = "C"
-			df.at[i, "Start"] = df.iloc[i]["End_gene1"] 
-			df.at[i, "End"] = df.iloc[i]["End_gene2"]
 		elif df.iloc[i]["Orientation"] == "-+":
 			df.at[i, "Region_Type"] = "D"
-			df.at[i, "Start"] = df.iloc[i]["Start_gene1"] 
-			df.at[i, "End"] = df.iloc[i]["Start_gene2"]
 		elif df.iloc[i]["Orientation"] == "++":
 			df.at[i, "Region_Type"] = "T"
-			df.at[i, "Start"] = df.iloc[i]["End_gene1"] 
-			df.at[i, "End"] = df.iloc[i]["Start_gene2"]
 		elif df.iloc[i]["Orientation"] == "--":
 			df.at[i, "Region_Type"] = "T"
-			df.at[i, "Start"] = df.iloc[i]["Start_gene1"] 
-			df.at[i, "End"] = df.iloc[i]["End_gene2"]
-
+		df.at[i, "Start"] = df.iloc[i]["End_gene1"] 
+		df.at[i, "End"] = df.iloc[i]["Start_gene2"]
+		"""
 		if df.iloc[i]["Name_gene1"] not in selected:
 			selected.append(df.iloc[i]["Name_gene1"])
 		if df.iloc[i]["Name_gene2"] not in selected:
 			selected.append(df.iloc[i]["Name_gene2"])
+		"""
 	else:
 		df.at[i, "Region_Type"] = "A"
 

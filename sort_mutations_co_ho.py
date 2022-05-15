@@ -22,7 +22,7 @@ def extract_ranges(df):
 	
 	return ranges
 
-def binary_search(ranges, item, k):
+def binary_search(ranges, item, k, i):
 	
 	low = 0
 	high = len(ranges[k]) - 1
@@ -38,12 +38,11 @@ def binary_search(ranges, item, k):
 	return False
 
 def sort_indeces(ranges, maf):
-	print(len(maf))#112040
+
 	index = []
 	for i in maf.index:
-		print(i)
 		if binary_search(ranges, maf.at[i,"Start_Position"], 
-		maf.at[i,"Chromosome"]) == True:
+		maf.at[i,"Chromosome"], i) == True:
 			index.append(i)
 	return index
 
@@ -74,12 +73,3 @@ if __name__ == '__main__':
 	print("Number of mutations between tandent genes: ", len(index_tand))
 	maf_tand = maf.loc[index_tand]
 	maf_tand.to_csv("Data/" + dataset + "/Tandem/co.maf", sep="\t", index=False)
-	
-	intersection_conv_div = maf_conv.index.intersection(maf_div.index)
-	print("Number of mutations in common between C and D regions: ", len(intersection_conv_div))
-	
-	intersection_conv_tand = maf_conv.index.intersection(maf_tand.index)
-	print("Number of mutations in common between C and T regions: ", len(intersection_conv_tand))
-	
-	intersection_div_tand = maf_div.index.intersection(maf_tand.index)
-	print("Number of mutations in common between D and T regions: ", len(intersection_div_tand))

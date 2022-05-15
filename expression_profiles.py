@@ -52,6 +52,8 @@ def correlations():
 	tss_tts_mutated_genes = tss_tts_mutated_genes[tss_tts_mutated_genes["ID"].notna()]
 	tss_tts_mutated_genes = tss_tts_mutated_genes.set_index("ID")
 
+	# genes_to_analyze = genes_to_analyze.drop(genes_to_analyze.index.intersection(tss_tts_mutated_genes.index), axis=0)
+
 	counts = pd.read_csv("Data/" + dataset + "/Transcriptomics/" + dataset.lower() + \
 		"_normalized.tsv", index_col = 0, sep = "\t")
 
@@ -72,21 +74,21 @@ def correlations():
 	tss_tts_counts_log2 = tss_tts_log2.T.corr()
 
 	tss_counts_log2.to_csv("Data/" + dataset + "/Correlations/TSS/" + state + \
-		"/tss_cor_top50.tsv", sep = "\t", float_format='%.3f')
+		"/tss_cor.tsv", sep = "\t", float_format='%.3f')
 
 	tts_counts_log2.to_csv("Data/" + dataset + "/Correlations/TTS/" + state + \
-		"/tts_cor_top50.tsv", sep = "\t", float_format='%.3f')
+		"/tts_cor.tsv", sep = "\t", float_format='%.3f')
 
 	tss_tts_counts_log2.to_csv("Data/" + dataset + "/Correlations/TSS-TTS/" + \
-		state + "/tss_tts_cor_50.tsv", sep = "\t", float_format='%.3f')
+		state + "/tss_tts_cor.tsv", sep = "\t", float_format='%.3f')
 
 	return(tss_log2, tss_counts_log2, tts_log2, 
 		tts_counts_log2, tss_tts_log2, tss_tts_counts)
 
-def clustermap(matrix, region, name, v_min, v_max):
+def clustermap(matrix, region, name, v_min, v_max, color):
 	g = sns.clustermap(matrix, 
 	    vmin = v_min, vmax = v_max, 
-	    cmap = sns.color_palette("vlag", as_cmap = True), 
+	    cmap = sns.color_palette(color, as_cmap = True), 
 	    metric = "euclidean",
 	    xticklabels = False, yticklabels = False,
 	    method = "ward", figsize = [25, 25])
@@ -101,8 +103,8 @@ if __name__ == '__main__':
 	regions = ["TSS", "TTS", "TSS-TTS"]
 
 	for m, r in zip([tss_cor, tts_cor, tss_tts_cor], regions):
-		clustermap(m, r, "Co-expression-map", -1, 1)
+		clustermap(m, r, "Co-expression-map", -1, 1, "vlag")
 
 	for m, r in zip([tss_log2, tts_log2, tss_tts_log2], regions):
 		clustermap(m, r, "expression-profile", 
-			min(m.min(axis = 1)), max(m.max(axis = 1)))
+			min(m.min(axis = 1)), max(m.max(axis = 1)), "light:b")
