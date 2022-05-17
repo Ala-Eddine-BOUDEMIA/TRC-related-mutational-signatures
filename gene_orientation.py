@@ -49,8 +49,8 @@ for i in df.index:
 			df.at[i, "Region_Type"] = "T"
 		elif df.iloc[i]["Orientation"] == "--":
 			df.at[i, "Region_Type"] = "T"
-		df.at[i, "Start"] = df.iloc[i]["End_gene1"] 
-		df.at[i, "End"] = df.iloc[i]["Start_gene2"]
+		df.at[i, "Start"] = df.iloc[i]["End_gene1"] - 3000
+		df.at[i, "End"] = df.iloc[i]["Start_gene2"] + 3000
 		"""
 		if df.iloc[i]["Name_gene1"] not in selected:
 			selected.append(df.iloc[i]["Name_gene1"])
