@@ -19,7 +19,7 @@ cp -r /data/tmp/aboudemi/Mutational_Profiles /local/scratch/mutational_signature
 cp /data/tmp/aboudemi/*.py /local/scratch/mutational_signatures_blca_remain_inactive
 
 source env/bin/activate
-python /local/scratch/mutational_signatures_blca_remain_inactive/8_extract_sigs.py --cancer_type BLCA --region Remain --num_signatures 7 --cluster
+python /local/scratch/mutational_signatures_blca_remain_inactive/8_extract_sigs.py --dataset BLCA --region Remain --num_signatures 7 --cluster
 
 cp -r /local/scratch/mutational_signatures_blca_remain_inactive/Mutational_Signatures/BLCA/Remain/inactive/* /data/tmp/aboudemi/Mutational_Signatures/BLCA/Remain/inactive/
 rm -r /local/scratch/mutational_signatures_blca_remain_inactive

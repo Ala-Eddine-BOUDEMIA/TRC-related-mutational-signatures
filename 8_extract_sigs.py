@@ -22,13 +22,13 @@ if __name__ == '__main__':
 			"matrix", 
 
 			"/local/scratch/mutational_signatures_" \
-			+ dataset.lower() + "_" + region.lower() + "_" + state \
-			+ "/Mutational_Signatures/" + dataset + "/" + region + "/" + state + "/", 
+			+ dataset.lower() + "_" + region.lower() \
+			+ "/Mutational_Signatures/" + dataset + "/" + region + "/", 
 
 			"/local/scratch/mutational_signatures_" \
-			+ dataset.lower() + "_" + region.lower() + "_" + state \
-			+ "/Mutational_Profiles/" + dataset + "/" + region + "/" + state \
-			+ "/SBS/" + dataset + "_" + region + "_" + state + ".SBS96.all", 
+			+ dataset.lower() + "_" + region.lower() \
+			+ "/Mutational_Profiles/" + dataset + "/" + region \
+			+ "/SBS/" + dataset + "_" + region + ".SBS96.all", 
 			
 			reference_genome = "GRCh38", opportunity_genome = "GRCh38",
 			cpu = -1, context_type = "96", minimum_signatures = 1, 
@@ -47,3 +47,20 @@ if __name__ == '__main__':
 			reference_genome = "GRCh38", opportunity_genome = "GRCh38", 
 			cpu = -1, context_type = "96", minimum_signatures = 1, 
 			maximum_signatures = Config.args.num_signatures)
+
+	"""
+	sig.sigProfilerExtractor(
+			"matrix", 
+
+			"/local/scratch/mutational_signatures_" \
+			+ dataset.lower() + "_" + region.lower() + "_" + state \
+			+ "/Mutational_Signatures/" + dataset + "/" + region + "/" + state + "/", 
+
+			"/local/scratch/mutational_signatures_" \
+			+ dataset.lower() + "_" + region.lower() + "_" + state \
+			+ "/Mutational_Profiles/" + dataset + "/" + region + "/" + state \
+			+ "/SBS/" + dataset + "_" + region + "_" + state + ".SBS96.all", 
+			
+			reference_genome = "GRCh38", opportunity_genome = "GRCh38",
+			cpu = -1, context_type = "96", minimum_signatures = 1, 
+			maximum_signatures = Config.args.num_signatures)"""

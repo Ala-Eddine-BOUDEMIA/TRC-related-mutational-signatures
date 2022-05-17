@@ -19,7 +19,7 @@ cp -r /data/tmp/aboudemi/Data /local/scratch/mutational_profiles_blca_tts_inacti
 cp /data/tmp/aboudemi/*.py /local/scratch/mutational_profiles_blca_tts_inactive
 
 source env/bin/activate
-python /local/scratch/mutational_profiles_blca_tts_inactive/7_matgen.py --cancer_type BLCA --region TTS --cluster
+python /local/scratch/mutational_profiles_blca_tts_inactive/7_matgen.py --dataset BLCA --region TTS --cluster
 
 cp -r /local/scratch/mutational_profiles_blca_tts_inactive/Data/BLCA/TTS/inactive/output/* /data/tmp/aboudemi/Mutational_Profiles/BLCA/TTS/inactive/
 rm -r /local/scratch/mutational_profiles_blca_tts_inactive

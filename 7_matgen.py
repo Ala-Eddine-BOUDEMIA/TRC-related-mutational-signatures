@@ -15,12 +15,19 @@ if Config.args.is_global == True:
 
 if Config.args.cluster == True:
 	matrices = matGen.SigProfilerMatrixGeneratorFunc(
-		dataset + "_" + region + "_" + state, "GRCh38", 	
+		dataset + "_" + region, "GRCh38", 	
 		"/local/scratch/mutational_profiles_" \
-		+ dataset.lower() + "_" + region.lower() + "_" + state + "/Data/" \
-		+ dataset + "/" + region + "/" + state + "/", plot=True)
+		+ dataset.lower() + "_" + region.lower() + "/Data/" \
+		+ dataset + "/" + region  + "/", plot=True)
 
 elif Config.args.cluster == False:
 	matrices = matGen.SigProfilerMatrixGeneratorFunc(
 		dataset + "_" + region + "_" + state, "GRCh38", 
 		"Data/" + dataset + "/" + region + "/" + state + "/", plot=True)
+
+"""
+matrices = matGen.SigProfilerMatrixGeneratorFunc(
+		dataset + "_" + region + "_" + state, "GRCh38", 	
+		"/local/scratch/mutational_profiles_" \
+		+ dataset.lower() + "_" + region.lower() + "_" + state + "/Data/" \
+		+ dataset + "/" + region + "/" + state + "/", plot=True)"""
