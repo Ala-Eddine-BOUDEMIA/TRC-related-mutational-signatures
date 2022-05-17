@@ -83,7 +83,7 @@ def correlations():
 		state + "/tss_tts_cor.tsv", sep = "\t", float_format='%.3f')
 
 	return(tss_log2, tss_counts_log2, tts_log2, 
-		tts_counts_log2, tss_tts_log2, tss_tts_counts)
+		tts_counts_log2, tss_tts_log2, tss_tts_counts_log2)
 
 def clustermap(matrix, region, name, v_min, v_max, color):
 	g = sns.clustermap(matrix, 
