@@ -12,7 +12,7 @@
 
 source /data/tmp/aboudemi/profile.sh
 
-mkdir -p /data/tmp/aboudemi/Mutational_Profiles/BLCA/co-directional
+mkdir -p /data/tmp/aboudemi/Mutational_Profiles/BLCA/Co-directional
 mkdir /local/scratch/mutational_profiles_blca_co-directional
 
 cp -r /data/tmp/aboudemi/Data /local/scratch/mutational_profiles_blca_co-directional
