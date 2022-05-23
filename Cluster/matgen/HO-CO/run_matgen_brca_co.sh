@@ -19,7 +19,7 @@ cp -r /data/tmp/aboudemi/Data /local/scratch/mutational_profiles_brca_co-directi
 cp /data/tmp/aboudemi/*.py /local/scratch/mutational_profiles_brca_co-directional
 
 source env/bin/activate
-python /local/scratch/mutational_profiles_brca_co-directional/7_matgen.py --cluster --region Co-directional
+python /local/scratch/mutational_profiles_brca_co-directional/matgen.py --cluster --region Co-directional
 
 cp -r /local/scratch/mutational_profiles_brca_co-directional/Data/BRCA/Co-directional/output/* /data/tmp/aboudemi/Mutational_Profiles/BRCA/Co-directional/
 rm -rf /local/scratch/mutational_profiles_brca_co-directional

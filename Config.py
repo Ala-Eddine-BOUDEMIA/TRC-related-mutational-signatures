@@ -13,20 +13,20 @@ parser.add_argument("--num_signatures",
 	default = 5,
 	help = "The maximum number of mutational signatures to be extracted")
 
-parser.add_argument("--is_global", 
-	action = "store_true",
-	default = False,
-	help = "If True will work on the global dataset otherwise it will consider active or inactive genes")
-
-parser.add_argument("--is_active", 
-	action = "store_true",
-	default = False,
-	help = "If True will set the paths to the directory that should contain results from active genes")
+parser.add_argument("--state", 
+	type = str,
+	default = "All",
+	help = "active, inactive, 6kb")
 
 parser.add_argument("--cluster", 
 	action = "store_true",
 	default = False,
 	help = "If running on the HPC or not")
+
+parser.add_argument("--strand", 
+	action = "store_true",
+	default = False,
+	help = "If True, consider overlapping genes on different strands")
 
 parser.add_argument("--region",
 	type = str,

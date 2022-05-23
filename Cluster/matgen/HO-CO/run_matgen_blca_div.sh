@@ -19,7 +19,7 @@ cp -r /data/tmp/aboudemi/Data /local/scratch/mutational_profiles_blca_divergent
 cp /data/tmp/aboudemi/*.py /local/scratch/mutational_profiles_blca_divergent
 
 source env/bin/activate
-python /local/scratch/mutational_profiles_blca_divergent/7_matgen.py --dataset BLCA --cluster --region Divergent
+python /local/scratch/mutational_profiles_blca_divergent/matgen.py --dataset BLCA --cluster --region Divergent
 
 cp -r /local/scratch/mutational_profiles_blca_divergent/Data/BLCA/Divergent/output/* /data/tmp/aboudemi/Mutational_Profiles/BLCA/Divergent/
 rm -r /local/scratch/mutational_profiles_blca_divergent

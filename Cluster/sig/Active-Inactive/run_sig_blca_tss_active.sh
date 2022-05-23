@@ -19,7 +19,7 @@ cp -r /data/tmp/aboudemi/Mutational_Profiles /local/scratch/mutational_signature
 cp /data/tmp/aboudemi/*.py /local/scratch/mutational_signatures_blca_tss_active
 
 source env/bin/activate
-python /local/scratch/mutational_signatures_blca_tss_active/8_extract_sigs.py --dataset BLCA --region TSS --num_signatures 7 --is_active --cluster
+python /local/scratch/mutational_signatures_blca_tss_active/extract_sigs.py --dataset BLCA --region TSS --num_signatures 7 --is_active --cluster
 
 cp -r /local/scratch/mutational_signatures_blca_tss_active/Mutational_Signatures/BLCA/TSS/active/* /data/tmp/aboudemi/Mutational_Signatures/BLCA/TSS/active/
 rm -r /local/scratch/mutational_signatures_blca_tss_active

@@ -19,7 +19,7 @@ cp -r /data/tmp/aboudemi/Data /local/scratch/mutational_profiles_blca_remain_act
 cp /data/tmp/aboudemi/*.py /local/scratch/mutational_profiles_blca_remain_active
 
 source env/bin/activate
-python /local/scratch/mutational_profiles_blca_remain_active/7_matgen.py --dataset BLCA --region Remain --is_active --cluster
+python /local/scratch/mutational_profiles_blca_remain_active/matgen.py --dataset BLCA --region Remain --is_active --cluster
 
 cp -r /local/scratch/mutational_profiles_blca_remain_active/Data/BLCA/Remain/active/output/* /data/tmp/aboudemi/Mutational_Profiles/BLCA/Remain/active/
 rm -r /local/scratch/mutational_profiles_blca_remain_active

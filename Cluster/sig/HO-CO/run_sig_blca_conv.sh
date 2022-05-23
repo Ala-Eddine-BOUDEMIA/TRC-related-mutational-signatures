@@ -19,7 +19,7 @@ cp -r /data/tmp/aboudemi/Mutational_Profiles /local/scratch/mutational_signature
 cp /data/tmp/aboudemi/*.py /local/scratch/mutational_signatures_blca_convergent
 
 source env/bin/activate
-python /local/scratch/mutational_signatures_blca_convergent/8_extract_sigs.py --dataset BLCA --num_signatures 7 --cluster --region Convergent
+python /local/scratch/mutational_signatures_blca_convergent/extract_sigs.py --dataset BLCA --num_signatures 7 --cluster --region Convergent
 
 cp -r /local/scratch/mutational_signatures_blca_convergent/Mutational_Signatures/BLCA/Convergent/* /data/tmp/aboudemi/Mutational_Signatures/BLCA/Convergent/
 rm -r /local/scratch/mutational_signatures_blca_convergent

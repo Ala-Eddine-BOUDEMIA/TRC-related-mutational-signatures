@@ -19,7 +19,7 @@ cp -r /data/tmp/aboudemi/Data /local/scratch/mutational_profiles_brca_convergent
 cp /data/tmp/aboudemi/*.py /local/scratch/mutational_profiles_brca_convergent
 
 source env/bin/activate
-python /local/scratch/mutational_profiles_brca_convergent/7_matgen.py --cluster --region Convergent
+python /local/scratch/mutational_profiles_brca_convergent/matgen.py --cluster --region Convergent
 
 cp -r /local/scratch/mutational_profiles_brca_convergent/Data/BRCA/Convergent/output/* /data/tmp/aboudemi/Mutational_Profiles/BRCA/Convergent/
 rm -r /local/scratch/mutational_profiles_brca_convergent
