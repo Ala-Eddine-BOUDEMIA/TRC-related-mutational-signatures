@@ -9,7 +9,7 @@ def extract_ranges(df):
 
 	for i in df.index:
 		chr_ = df.at[i, "Chr"]
-	
+
 		if chr_ in ranges.keys():
 			start_pos = df.at[i, "Start"]
 			end_pos = df.at[i, "End"]
@@ -17,6 +17,8 @@ def extract_ranges(df):
 
 	for k in ranges.keys():
 		ranges[k].sort(key=lambda x:x[-1])
+
+	return ranges
 
 def extract_ranges_stranded(df):
 	

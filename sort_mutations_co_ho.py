@@ -8,9 +8,12 @@ def sort_indeces(ranges, maf):
 
 	index = []
 	for i in maf.index:
-		if Binary_search.binary_search(ranges, maf.at[i,"Start_Position"], 
-		maf.at[i,"Chromosome"], i) == True:
+		b, _ = Binary_search.binary_search(
+			ranges, maf.at[i,"Start_Position"], maf.at[i,"Chromosome"], i) 
+
+		if b == True:
 			index.append(i)
+			
 	return index
 
 if __name__ == '__main__':
