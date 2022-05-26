@@ -1,5 +1,6 @@
 import pandas as pd 
 import plotly.express as px
+import plotly.figure_factory as ff
 
 import Config
 import Binary_search
@@ -36,25 +37,111 @@ for k in drip_nov.keys():
 		if b == True:
 			ind = drip_nov[k].index(loop)
 			drip_nov[k][ind][2] += 1
+			drip_nov[k][ind].append(maf.at[i, "Start_Position"])
+
+drip_all = []
+for k in drip_nov.keys():
+	for i in drip_nov[k]:
+		drip_all.append([k, i[0], i[1], i[2]] + i[3:])
+
+drip_all_df = pd.DataFrame(drip_all)
+drip_all_df["Size"] = drip_all_df[2] - drip_all_df[1]
+drip_all_df = drip_all_df[drip_all_df["Size"] <= 8000]
+drip_all_df["Middle"] = (drip_all_df[1] + drip_all_df[2])//2
+drip_all_df["Start"] = drip_all_df[1] - drip_all_df["Middle"]
+drip_all_df["End"] = drip_all_df[2] - drip_all_df["Middle"]
+drip_all_df.iloc[:,4:-4] = drip_all_df.iloc[:,4:-4].rsub(drip_all_df["Middle"],0)
+drip_all_df.pop("Size") 
+drip_all_df.to_csv("Annotations/MCF7/All/drip_mut.tsv", sep="\t", index=False)
+
+mutations = drip_all_df.iloc[:, 4:-3]
+li=[]
+for i in mutations.columns:
+	li = li + mutations.loc[:,i].dropna().to_list()
+
+fig = ff.create_distplot([li],['rloops'], show_hist = False)
+fig.show()
+
+fig = px.histogram(li, nbins=80)
+fig.show()
 
 drip_tss = []
 for k in drip_nov.keys():
 	for i in drip_nov[k]:
 		for j in tss_ranges[k]:
 			if min(i[1], j[1]) >= max(i[0], j[0]):
-				drip_tss.append([k, i[0], i[1], i[2]])
+				drip_tss.append([k, i[0], i[1], i[2]] + i[3:])
 				break
+
+drip_tss_df = pd.DataFrame(drip_tss)
+drip_tss_df["Size"] = drip_tss_df[2] - drip_tss_df[1]
+drip_tss_df = drip_tss_df[drip_tss_df["Size"] <= 8000]
+drip_tss_df["Middle"] = (drip_tss_df[1] + drip_tss_df[2])//2
+drip_tss_df["Start"] = drip_tss_df[1] - drip_tss_df["Middle"]
+drip_tss_df["End"] = drip_tss_df[2] - drip_tss_df["Middle"]
+drip_tss_df.iloc[:,4:-4] = drip_tss_df.iloc[:,4:-4].rsub(drip_tss_df["Middle"],0)
+drip_tss_df.pop("Size") 
+#drip_tss_df.to_csv("Annotations/MCF7/TSS/drip_tss_mut.tsv", sep="\t", index=False)
+
+mutations = drip_tss_df.iloc[:, 4:-3]
+li_tss=[]
+for i in mutations.columns:
+	li_tss = li_tss + mutations.loc[:,i].dropna().to_list()
+
+fig = ff.create_distplot([li_tss],['rloops_tss'], show_hist = False)
+fig.show()
+
+fig = px.histogram(li_tss, nbins=80, title="TSS")
+fig.show()
 
 drip_tts = []
 for k in drip_nov.keys():
 	for i in drip_nov[k]:
 		for j in tts_ranges[k]:
 			if min(i[1], j[1]) >= max(i[0], j[0]):
-				drip_tts.append([k, i[0], i[1], i[2]])
+				drip_tts.append([k, i[0], i[1], i[2]] + i[3:])
 				break
 
-drip_tss_df = pd.DataFrame(drip_tss, columns=[["Chr", "Start", "End", "Mutations"]])
-drip_tts_df = pd.DataFrame(drip_tts, columns=[["Chr", "Start", "End", "Mutations"]])
+drip_tts_df = pd.DataFrame(drip_tts)
+drip_tts_df["Size"] = drip_tts_df[2] - drip_tts_df[1]
+drip_tts_df = drip_tts_df[drip_tts_df["Size"] <= 8000]
+drip_tts_df["Middle"] = (drip_tts_df[1] + drip_tts_df[2])//2
+drip_tts_df["Start"] = drip_tts_df[1] - drip_tts_df["Middle"]
+drip_tts_df["End"] = drip_tts_df[2] - drip_tts_df["Middle"]
+drip_tts_df.iloc[:,4:-4] = drip_tts_df.iloc[:,4:-4].rsub(drip_tts_df["Middle"],0)
+drip_tts_df.pop("Size") 
+#drip_tts_df.to_csv("Annotations/MCF7/TTS/drip_tts_mut.tsv", sep="\t", index=False)
 
-drip_tss_df.to_csv("Annotations/MCF7/TSS/drip_tss_mck.tsv", sep="\t", index=False)
-drip_tts_df.to_csv("Annotations/MCF7/TTS/drip_tts_mck.tsv", sep="\t", index=False)
+mutations = drip_tts_df.iloc[:, 4:-3]
+li_tts=[]
+for i in mutations.columns:
+	li_tts = li_tts + mutations.loc[:,i].dropna().to_list()
+
+fig = ff.create_distplot([li_tts],['rloops_tts'], show_hist = False)
+fig.show()
+
+fig = px.histogram(li_tts, nbins=80, title="TTS")
+fig.show()
+
+fig = ff.create_distplot([li_tss, li_tts],['rloop_tss', 'rloops_tts'], show_hist = False)
+fig.show()
+
+import plotly.graph_objects as go
+
+fig = go.Figure()
+fig.add_trace(go.Histogram(x=li_tts, nbinsx=80, name="TTS"))
+fig.add_trace(go.Histogram(x=li_tss, nbinsx=80, name="TSS"))
+
+# Overlay both histograms
+fig.update_layout(barmode='overlay')
+# Reduce opacity to see both histograms
+fig.update_traces(opacity=0.75)
+fig.show()
+
+#drip_all_df = pd.DataFrame(drip_all, columns=[["Chr", "Start", "End", "Mutations"]])
+#drip_tss_df = pd.DataFrame(drip_tss, columns=[["Chr", "Start", "End", "Mutations"]])
+#drip_tts_df = pd.DataFrame(drip_tts, columns=[["Chr", "Start", "End", "Mutations"]])
+
+#drip_all_df.to_csv("Annotations/MCF7/All/drip_all_mck.tsv", sep="\t", index=False)
+#drip_tss_df.to_csv("Annotations/MCF7/TSS/drip_tss_mck.tsv", sep="\t", index=False)
+#drip_tts_df.to_csv("Annotations/MCF7/TTS/drip_tts_mck.tsv", sep="\t", index=False)
