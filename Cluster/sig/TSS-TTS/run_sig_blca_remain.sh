@@ -13,13 +13,13 @@
 source /data/tmp/aboudemi/profile.sh
 
 mkdir -p /data/tmp/aboudemi/Mutational_Signatures/BLCA/Remain/6kb
-mkdir /local/scratch/mutational_signatures_blca_remain
+mkdir /local/scratch/mutational_signatures_blca_remain_6kb
 
-cp -r /data/tmp/aboudemi/Mutational_Profiles /local/scratch/mutational_signatures_blca_remain
-cp /data/tmp/aboudemi/*.py /local/scratch/mutational_signatures_blca_remain
+cp -r /data/tmp/aboudemi/Mutational_Profiles /local/scratch/mutational_signatures_blca_remain_6kb
+cp /data/tmp/aboudemi/*.py /local/scratch/mutational_signatures_blca_remain_6kb
 
 source env/bin/activate
-python /local/scratch/mutational_signatures_blca_remain/extract_sigs.py --dataset BLCA --region Remain --state 6kb --num_signatures 7 --cluster
+python /local/scratch/mutational_signatures_blca_remain_6kb/extract_sigs.py --dataset BLCA --region Remain --state 6kb --num_signatures 7 --cluster
 
-cp -r /local/scratch/mutational_signatures_blca_remain/Mutational_Signatures/BLCA/Remain/6kb/* /data/tmp/aboudemi/Mutational_Signatures/BLCA/Remain/6kb/
-rm -r /local/scratch/mutational_signatures_blca_remain
+cp -r /local/scratch/mutational_signatures_blca_remain_6kb/Mutational_Signatures/BLCA/Remain/6kb/* /data/tmp/aboudemi/Mutational_Signatures/BLCA/Remain/6kb/
+rm -r /local/scratch/mutational_signatures_blca_remain_6kb

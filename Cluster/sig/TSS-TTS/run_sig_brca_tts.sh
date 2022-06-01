@@ -13,13 +13,13 @@
 source /data/tmp/aboudemi/profile.sh
 
 mkdir -p /data/tmp/aboudemi/Mutational_Signatures/BRCA/TTS/6kb
-mkdir /local/scratch/mutational_signatures_brca_tts
+mkdir /local/scratch/mutational_signatures_brca_tts_6kb
 
-cp -r /data/tmp/aboudemi/Mutational_Profiles /local/scratch/mutational_signatures_brca_tts
-cp /data/tmp/aboudemi/*.py /local/scratch/mutational_signatures_brca_tts
+cp -r /data/tmp/aboudemi/Mutational_Profiles /local/scratch/mutational_signatures_brca_tts_6kb
+cp /data/tmp/aboudemi/*.py /local/scratch/mutational_signatures_brca_tts_6kb
 
 source env/bin/activate
-python /local/scratch/mutational_signatures_brca_tts/extract_sigs.py --dataset BRCA --region TTS --state 6kb --num_signatures 5 --cluster
+python /local/scratch/mutational_signatures_brca_tts_6kb/extract_sigs.py --dataset BRCA --region TTS --state 6kb --num_signatures 5 --cluster
 
-cp -r /local/scratch/mutational_signatures_brca_tts/Mutational_Signatures/BRCA/TTS6kb/* /data/tmp/aboudemi/Mutational_Signatures/BRCA/TTS/6kb/
-rm -r /local/scratch/mutational_signatures_brca_tts
+cp -r /local/scratch/mutational_signatures_brca_tts_6kb/Mutational_Signatures/BRCA/TTS6kb/* /data/tmp/aboudemi/Mutational_Signatures/BRCA/TTS/6kb/
+rm -r /local/scratch/mutational_signatures_brca_tts_6kb
