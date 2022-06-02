@@ -12,7 +12,7 @@
 
 source /data/tmp/aboudemi/profile.sh
 
-mkdir -p /data/tmp/aboudemi/Mutational_Signatures/BLCA/Original
+mkdir -p /data/tmp/aboudemi/Mutational_Signatures/BLCA/Original/All/
 mkdir /local/scratch/mutational_signatures_blca_original_All
 
 cp -r /data/tmp/aboudemi/Mutational_Profiles /local/scratch/mutational_signatures_blca_original_All
@@ -21,5 +21,5 @@ cp /data/tmp/aboudemi/*.py /local/scratch/mutational_signatures_blca_original_Al
 source env/bin/activate
 python /local/scratch/mutational_signatures_blca_original_All/extract_sigs.py --dataset BLCA --num_signatures 7 --cluster --region Original --state All
 
-cp -r /local/scratch/mutational_signatures_blca_original_All/Mutational_Signatures/BLCA/Original/* /data/tmp/aboudemi/Mutational_Signatures/BLCA/Original/
+cp -r /local/scratch/mutational_signatures_blca_original_All/Mutational_Signatures/BLCA/Original/All/* /data/tmp/aboudemi/Mutational_Signatures/BLCA/Original/All/
 rm -r /local/scratch/mutational_signatures_blca_original_All

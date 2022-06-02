@@ -1,7 +1,7 @@
 #!/bin/bash
 ## Torque Configuration
 # resources
-#PBS -l walltime=24:00:00
+#PBS -l walltime=240:00:00
 #PBS -l mem=6gb
 #PBS -l nodes=1:ppn=12
 #PBS -q batch
@@ -12,14 +12,14 @@
 
 source /data/tmp/aboudemi/profile.sh
 
-mkdir -p /data/tmp/aboudemi/Mutational_Signatures/BLCA/Convergent
-mkdir /local/scratch/mutational_signatures_blca_convergent
+mkdir -p /data/tmp/aboudemi/Mutational_Signatures/BLCA/Convergent/All/
+mkdir /local/scratch/mutational_signatures_blca_convergent_All
 
-cp -r /data/tmp/aboudemi/Mutational_Profiles /local/scratch/mutational_signatures_blca_convergent
-cp /data/tmp/aboudemi/*.py /local/scratch/mutational_signatures_blca_convergent
+cp -r /data/tmp/aboudemi/Mutational_Profiles /local/scratch/mutational_signatures_blca_convergent_All
+cp /data/tmp/aboudemi/*.py /local/scratch/mutational_signatures_blca_convergent_All
 
 source env/bin/activate
-python /local/scratch/mutational_signatures_blca_convergent/extract_sigs.py --dataset BLCA --num_signatures 7 --cluster --region Convergent
+python /local/scratch/mutational_signatures_blca_convergent_All/extract_sigs.py --dataset BLCA --num_signatures 7 --cluster --region Convergent --state All
 
-cp -r /local/scratch/mutational_signatures_blca_convergent/Mutational_Signatures/BLCA/Convergent/* /data/tmp/aboudemi/Mutational_Signatures/BLCA/Convergent/
-rm -r /local/scratch/mutational_signatures_blca_convergent
+cp -r /local/scratch/mutational_signatures_blca_convergent_All/Mutational_Signatures/BLCA/Convergent/All/* /data/tmp/aboudemi/Mutational_Signatures/BLCA/Convergent/All/
+rm -r /local/scratch/mutational_signatures_blca_convergent_All

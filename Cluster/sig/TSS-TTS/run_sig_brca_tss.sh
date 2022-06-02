@@ -8,7 +8,7 @@
 
 
 # Information
-#PBS -N sig_brca_tss_inactive
+#PBS -N sig_brca_tss
 
 source /data/tmp/aboudemi/profile.sh
 
