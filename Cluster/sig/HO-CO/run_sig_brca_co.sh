@@ -2,7 +2,7 @@
 ## Torque Configuration
 # resources
 #PBS -l walltime=240:00:00
-#PBS -l mem=6gb
+#PBS -l mem=8gb
 #PBS -l nodes=1:ppn=12
 #PBS -q batch
 

@@ -21,5 +21,5 @@ cp /data/tmp/aboudemi/*.py /local/scratch/mutational_signatures_brca_tts_6kb
 source env/bin/activate
 python /local/scratch/mutational_signatures_brca_tts_6kb/extract_sigs.py --dataset BRCA --region TTS --state 6kb --num_signatures 5 --cluster
 
-cp -r /local/scratch/mutational_signatures_brca_tts_6kb/Mutational_Signatures/BRCA/TTS6kb/* /data/tmp/aboudemi/Mutational_Signatures/BRCA/TTS/6kb/
+cp -r /local/scratch/mutational_signatures_brca_tts_6kb/Mutational_Signatures/BRCA/TTS/6kb/* /data/tmp/aboudemi/Mutational_Signatures/BRCA/TTS/6kb/
 rm -r /local/scratch/mutational_signatures_brca_tts_6kb
