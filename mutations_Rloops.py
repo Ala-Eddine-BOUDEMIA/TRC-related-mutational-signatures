@@ -25,10 +25,11 @@ def plot(df, bins, titre):
 	path = "MCF7-DRIP-Mutations/E2-2h/" + titre + ".html"
 	fig.write_html(path)
 
-def overlay_plot(df1, df2, bins, titre):
+def overlay_plot(df1, df2, bins1, bins2, name1, name2, titre):
+
 	fig = go.Figure()
-	fig.add_trace(go.Histogram(x=df1["Mutations_C"].values, nbinsx=bins, name=titre))
-	fig.add_trace(go.Histogram(x=df2["Mutations_C"].values, nbinsx=bins, name=titre))
+	fig.add_trace(go.Histogram(x=df1["Mutations_C"].values, nbinsx=bins1, name=name1))
+	fig.add_trace(go.Histogram(x=df2["Mutations_C"].values, nbinsx=bins2, name=name2))
 
 	fig.update_layout(barmode='overlay')
 	fig.update_traces(opacity=0.75)
@@ -120,21 +121,27 @@ if __name__ == '__main__':
 	plot(tss_only_mutations_df, 160, "Mutations_occurring_only_at_TSS_regions")
 	plot(tts_only_mutations_df, 160, "Mutations_occurring_only_at_TTS_regions")
 
-	overlay_plot(tss_drip_mutations_df, tts_drip_mutations_df, 
-		80, "Mutations_Co-occurring_with_R-Loops_close_to_TSS_TTS")
-	overlay_plot(tss_mutations_df, tts_mutations_df, 
-		80, "Mutations_occurring_close_to_TSS_TTS")
-	overlay_plot(tss_only_mutations_df, tts_only_mutations_df, 
-		80, "Mutations_occurring_only_at_TSS_TTS")
+	overlay_plot(tts_drip_mutations_df, tss_drip_mutations_df, 
+		80, 80, "TTS-Rloops", "TSS-Rloops", 
+		"Mutations_Co-occurring_with_R-Loops_close_to_TSS_TTS")
+	overlay_plot(tts_mutations_df, tss_mutations_df, 
+		160, 160, "TTS-only", "TSS-only", 
+		"Mutations_occurring_close_to_TSS_TTS")
+	overlay_plot(tts_only_mutations_df, tss_only_mutations_df, 
+		160, 160, "TTS", "TSS", 
+		"Mutations_occurring_only_at_TSS_TTS")
 	overlay_plot(tss_only_mutations_df, tss_drip_mutations_df, 
-		80, "Mutations_occurring_only_at_TSS_or_co-occurring_with_TSS_Rloops")
+		160, 80, "TSS-only", "TSS-Rloops", 
+		"Mutations_occurring_only_at_TSS_or_co-occurring_with_TSS_Rloops")
 	overlay_plot(tts_only_mutations_df, tts_drip_mutations_df, 
-		80, "Mutations_occurring_only_at_TTS_or_co-occurring_with_TTS_Rloops")
+		160, 80, "TTS-only", "TTS-Rloops", 
+		"Mutations_occurring_only_at_TTS_or_co-occurring_with_TTS_Rloops")
 
 	not_drip = tss_only_mutations_df["Mutations_C"].to_list() + tts_only_mutations_df["Mutations_C"].to_list()
 	not_drip_df = pd.DataFrame(not_drip, columns=["Mutations_C"])
-	overlay_plot(drip_mutations_df, not_drip_df, 
-		80, "Mutations_co-occurring_with_Rloops_and_outside_Rloops")
+	overlay_plot(not_drip_df, drip_mutations_df,
+		160, 80, "Not-Rloops", "Rloops", 
+		"Mutations_co-occurring_with_Rloops_and_outside_Rloops")
 
 	drip_mutations_maf = maf.loc[drip_mutations_df.index]
 	tss_drip_mutations_maf = maf.loc[tss_drip_mutations_df.index]
@@ -150,8 +157,8 @@ if __name__ == '__main__':
 	tss_only_mutations_df.to_csv("Annotations/MCF7/TSS/E2-2h/only_tss_mutations.tsv", sep="\t", index=False)
 	tts_only_mutations_df.to_csv("Annotations/MCF7/TTS/E2-2h/only_tts_mutations.tsv", sep="\t", index=False)
 
-	drip_mutations_maf.to_csv("Data/MCF7-Drip/All/E2-2h/drip_mutations.maf", sep="\t", index=False)
-	tss_drip_mutations_maf.to_csv("Data/MCF7-Drip/TSS/E2-2h/drip_mutations.maf", sep="\t", index=False)
-	tts_drip_mutations_maf.to_csv("Data/MCF7-Drip/TTS/E2-2h/drip_mutations.maf", sep="\t", index=False)
-	tss_only_mutations_maf.to_csv("Data/MCF7-Drip/TSS/E2-2h/only_tss_mutations.maf", sep="\t", index=False)
-	tts_only_mutations_maf.to_csv("Data/MCF7-Drip/TTS/E2-2h/only_tts_mutations.maf", sep="\t", index=False)
+	drip_mutations_maf.to_csv("Data/MCF7/All/E2-2h/drip_mutations.maf", sep="\t", index=False)
+	tss_drip_mutations_maf.to_csv("Data/MCF7/TSS/E2-2h/drip_mutations.maf", sep="\t", index=False)
+	tts_drip_mutations_maf.to_csv("Data/MCF7/TTS/E2-2h/drip_mutations.maf", sep="\t", index=False)
+	tss_only_mutations_maf.to_csv("Data/MCF7/TSS/E2-2h/only_tss_mutations.maf", sep="\t", index=False)
+	tts_only_mutations_maf.to_csv("Data/MCF7/TTS/E2-2h/only_tts_mutations.maf", sep="\t", index=False)
