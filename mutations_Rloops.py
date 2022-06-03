@@ -8,169 +8,150 @@ import Binary_search
 import Remove_overlaps
 import Ranges_extractor
 
-drip = pd.read_csv("Data/MCF7-DRIP/mcf7-24h.bed", sep="\t")
-tss = pd.read_csv(Config.args.tss, sep="\t")
-tts = pd.read_csv(Config.args.tts, sep="\t")
-maf = pd.read_csv("Data/BRCA/Original/brca.maf", header=5, sep="\t")
-maf = maf[maf["Variant_Type"]=="SNP"]
+def update_df(df):
+	
+	df["Size"] = df['End'] - df["Start"]
+	df = df[df["Size"] <= 8000]
+	df["Middle"] = (df["Start"] + df["End"])//2
+	df["Start_C"] = df["Start"] - df["Middle"]
+	df["End_C"] = df["End"] - df["Middle"]
+	df["Mutations_C"] = df["Mutation"] - df["Middle"]
+	return df
 
-drip["Length"] = drip["End"] - drip["Start"]
-fig = px.histogram(drip, x="Length", title="R-Loops Length Distribution")
-fig.write_html("MCF7-DRIP-Mutations/Rloops_length_distribution.html")
+def plot(df, bins, titre):
+	
+	fig = px.histogram(df["Mutations_C"].values,
+	                nbins=bins, title = titre)
+	path = "MCF7-DRIP-Mutations/Control/" + titre + ".html"
+	fig.write_html(path)
 
-drip = drip.sort_values(["Chr", "Start"])
+def overlay_plot(df1, df2, bins, titre):
+	fig = go.Figure()
+	fig.add_trace(go.Histogram(x=df1["Mutations_C"].values, nbinsx=bins, name=titre))
+	fig.add_trace(go.Histogram(x=df2["Mutations_C"].values, nbinsx=bins, name=titre))
 
-drip_ranges = Ranges_extractor.extract_ranges(drip)
-#Merge overlapping loops
-drip_nov = Remove_overlaps.remove_overlaps(drip_ranges)
-for k in drip_nov.keys():
-	for li in drip_nov[k]:
-		li.append(0) 
+	fig.update_layout(barmode='overlay')
+	fig.update_traces(opacity=0.75)
+	path = "MCF7-DRIP-Mutations/Control/" + titre + ".html"
+	fig.write_html(path)
 
-tss_ranges = Ranges_extractor.extract_ranges(tss)
-tts_ranges = Ranges_extractor.extract_ranges(tts) 
+if __name__ == '__main__':
 
-for k in drip_nov.keys():
-	for i in maf[maf["Chromosome"]==k].index:
-		b, loop = Binary_search.binary_search(
-			drip_nov, maf.at[i, "Start_Position"], k) 
-		
-		if b == True:
-			ind = drip_nov[k].index(loop)
-			drip_nov[k][ind][2] += 1
-			drip_nov[k][ind].append(maf.at[i, "Start_Position"])
+	maf = pd.read_csv("Data/BRCA/Original/brca.maf", header=5, sep="\t")
+	maf = maf[maf["Variant_Type"]=="SNP"]
 
-drip_all = []
-for k in drip_nov.keys():
-	for i in drip_nov[k]:
-		drip_all.append([k, i[0], i[1], i[2]] + i[3:])
+	tss = pd.read_csv(Config.args.tss, sep="\t")
+	tss["Start"] = tss["Start"] - 1000
+	tss["End"] = tss["End"] + 1000
+	
+	tts = pd.read_csv(Config.args.tts, sep="\t")
+	tts["Start"] = tts["Start"] - 1000
+	tts["End"] = tts["End"] + 1000
 
-drip_all_df = pd.DataFrame(drip_all)
-drip_all_df["Size"] = drip_all_df[2] - drip_all_df[1]
-drip_all_df = drip_all_df[drip_all_df["Size"] <= 8000]
-drip_all_df["Middle"] = (drip_all_df[1] + drip_all_df[2])//2
-drip_all_df["Start"] = drip_all_df[1] - drip_all_df["Middle"]
-drip_all_df["End"] = drip_all_df[2] - drip_all_df["Middle"]
-drip_all_df.iloc[:,4:-4] = drip_all_df.iloc[:,4:-4].rsub(drip_all_df["Middle"],0)
-drip_all_df.pop("Size") 
-drip_all_df.to_csv("Annotations/MCF7/All/drip_mut_24h.tsv", sep="\t", index=False)
+	drip = pd.read_csv("Data/MCF7-DRIP/BED_Files/mcf7-ctrl.bed", sep="\t")
+	drip["Length"] = drip["End"] - drip["Start"]
+	drip = drip.sort_values(["Chr", "Start"])
 
-mutations = drip_all_df.iloc[:, 4:-3]
-li=[]
-for i in mutations.columns:
-	li = li + mutations.loc[:,i].dropna().to_list()
+	tss_ranges = Ranges_extractor.extract_ranges(tss)
+	tts_ranges = Ranges_extractor.extract_ranges(tts) 
+	drip_ranges = Ranges_extractor.extract_ranges(drip)
+	drip_ranges = Remove_overlaps.remove_overlaps(drip_ranges)
 
-li_dict = dict.fromkeys(range(-4000,4000,100),0)
-for i in li:
-	for j in li_dict.keys():
-		if i in range(j, j+100):
-			li_dict[j] += 1
+	drip_mutations = []
+	tss_mutations = []
+	tts_mutations = []
 
-li_df = pd.DataFrame.from_dict(li_dict, orient="index")
-li_df.to_csv('rloops.tsv',sep="\t")
-"""
-fig = ff.create_distplot([li],['rloops'], show_hist = False)
-fig.show()
-"""
+	for k in drip_ranges.keys():
+		for i in maf[maf["Chromosome"] == k].index:
 
-fig = px.histogram(li, nbins=80)
-fig.write_html("MCF7-DRIP-Mutations/mutations_in_rloops.html")
+			m = maf.loc[i, "Start_Position"]
+			b, loop = binary_search(drip_ranges, m, k)
+			if b == True:
+				drip_mutations.append([k, loop[0], loop[1], m, i])
 
-drip_tss = []
-for k in drip_nov.keys():
-	for i in drip_nov[k]:
-		for j in tss_ranges[k]:
-			if min(i[1], j[1]) >= max(i[0], j[0]):
-				drip_tss.append([k, i[0], i[1], i[2]] + i[3:])
-				break
+	for k in tss_ranges.keys():
+		for i in maf[maf["Chromosome"] == k].index:
+			m = maf.loc[i, "Start_Position"]
+			b, guess = binary_search(tss_ranges, m, k)
+			if b == True:
+				tss_mutations.append([k, guess[0], guess[1], m, i])
 
-drip_tss_df = pd.DataFrame(drip_tss)
-drip_tss_df["Size"] = drip_tss_df[2] - drip_tss_df[1]
-drip_tss_df = drip_tss_df[drip_tss_df["Size"] <= 8000]
-drip_tss_df["Middle"] = (drip_tss_df[1] + drip_tss_df[2])//2
-drip_tss_df["Start"] = drip_tss_df[1] - drip_tss_df["Middle"]
-drip_tss_df["End"] = drip_tss_df[2] - drip_tss_df["Middle"]
-drip_tss_df.iloc[:,4:-4] = drip_tss_df.iloc[:,4:-4].rsub(drip_tss_df["Middle"],0)
-drip_tss_df.pop("Size") 
-drip_tss_df.to_csv("Annotations/MCF7/TSS/drip_tss_mut_24h.tsv", sep="\t", index=False)
+	for k in tts_ranges.keys():
+		for i in maf[maf["Chromosome"] == k].index:
+			m = maf.loc[i, "Start_Position"]
+			b, guess = binary_search(tts_ranges, m, k)
+			if b == True:
+				tts_mutations.append([k, guess[0], guess[1], m, i])
 
-mutations = drip_tss_df.iloc[:, 4:-3]
-li_tss=[]
-for i in mutations.columns:
-	li_tss = li_tss + mutations.loc[:,i].dropna().to_list()
+	c = ["Chr", "Start", "End", "Mutation", "Index"]
+	drip_mutations_df = pd.DataFrame(drip_mutations, columns=c)
+	tss_mutations_df = pd.DataFrame(tss_mutations, columns=c)
+	tts_mutations_df = pd.DataFrame(tts_mutations, columns=c)
 
-li_tss_dict = dict.fromkeys(range(-4000,4000,100),0)
-for i in li_tss:
-	for j in li_tss_dict.keys():
-		if i in range(j, j+100):
-			li_tss_dict[j] += 1
+	drip_mutations_df = drip_mutations_df.set_index("Index")
+	tss_mutations_df = tss_mutations_df.set_index("Index")
+	tts_mutations_df = tts_mutations_df.set_index("Index")
 
-li_tss_df = pd.DataFrame.from_dict(li_tss_dict, orient="index")
-li_tss_df.to_csv('rloops_tss.tsv',sep="\t")
+	mutations_tss_drip = drip_mutations_df.index.intersection(tss_mutations_df.index)
+	mutations_tts_drip = drip_mutations_df.index.intersection(tts_mutations_df.index)
 
-"""
-fig = ff.create_distplot([li_tss],['rloops_tss'], show_hist = False)
-fig.show()
-"""
-fig = px.histogram(li_tss, nbins=80, title="TSS")
-fig.write_html('MCF7-DRIP-Mutations/tss_rloops_mutations.html')
+	tss_drip_mutations_df = drip_mutations_df.loc[pd.Series(mutations_tss_drip)]
+	tts_drip_mutations_df = drip_mutations_df.loc[pd.Series(mutations_tts_drip)]
 
-drip_tts = []
-for k in drip_nov.keys():
-	for i in drip_nov[k]:
-		for j in tts_ranges[k]:
-			if min(i[1], j[1]) >= max(i[0], j[0]):
-				drip_tts.append([k, i[0], i[1], i[2]] + i[3:])
-				break
+	mutations_tss_only = tss_drip_mutations_df.index.intersection(tss_mutations_df.index)
+	mutations_tts_only = tts_drip_mutations_df.index.intersection(tts_mutations_df.index)
 
-drip_tts_df = pd.DataFrame(drip_tts)
-drip_tts_df["Size"] = drip_tts_df[2] - drip_tts_df[1]
-drip_tts_df = drip_tts_df[drip_tts_df["Size"] <= 8000]
-drip_tts_df["Middle"] = (drip_tts_df[1] + drip_tts_df[2])//2
-drip_tts_df["Start"] = drip_tts_df[1] - drip_tts_df["Middle"]
-drip_tts_df["End"] = drip_tts_df[2] - drip_tts_df["Middle"]
-drip_tts_df.iloc[:,4:-4] = drip_tts_df.iloc[:,4:-4].rsub(drip_tts_df["Middle"],0)
-drip_tts_df.pop("Size") 
-drip_tts_df.to_csv("Annotations/MCF7/TTS/drip_tts_mut_24h.tsv", sep="\t", index=False)
+	tss_only_mutations_df = tss_mutations_df.drop(pd.Series(mutations_tss_only), axis=0)
+	tts_only_mutations_df = tts_mutations_df.drop(pd.Series(mutations_tts_only), axis=0)
 
-mutations = drip_tts_df.iloc[:, 4:-3]
-li_tts=[]
-for i in mutations.columns:
-	li_tts = li_tts + mutations.loc[:,i].dropna().to_list()
+	drip_mutations_df = update_df(drip_mutations_df)
+	tss_drip_mutations_df = update_df(tss_drip_mutations_df)
+	tts_drip_mutations_df = update_df(tts_drip_mutations_df)
+	tss_mutations_df = update_df(tss_mutations_df)
+	tts_mutations_df = update(tts_mutations_df)
+	tss_only_mutations_df = update_df(tss_only_mutations_df)
+	tts_only_mutations_df = update_df(tts_only_mutations_df)
 
-li_tts_dict = dict.fromkeys(range(-4000,4000,100),0)
-for i in li_tts:
-	for j in li_tts_dict.keys():
-		if i in range(j, j+100):
-			li_tts_dict[j] += 1
+	plot(drip_mutations_df, 80, "Mutations_Co-occurring_with_R-Loops")
+	plot(tss_drip_mutations_df, 80, "Mutations_Co-occurring_with_R-Loops_close_to_TSS")
+	plot(tts_drip_mutations_df, 80, "Mutations_Co-occurring_with_R-Loops_close_to_TTS")
+	plot(tss_mutations_df, 160, "Mutations_occurring_at_TSS_regions")
+	plot(tts_mutations_df, 160, "Mutations_occurring_at_TTS_regions")
+	plot(tss_only_mutations_df, 160, "Mutations_occurring_only_at_TSS_regions")
+	plot(tts_only_mutations_df, 160, "Mutations_occurring_only_at_TTS_regions")
 
-li_tts_df = pd.DataFrame.from_dict(li_tts_dict, orient="index")
-li_tts_df.to_csv('rloops_tts.tsv',sep="\t")
+	overlay_plot(tss_drip_mutations_df, tts_drip_mutations_df, 
+		80, "Mutations_Co-occurring_with_R-Loops_close_to_TSS_TTS")
+	overlay_plot(tss_mutations_df, tts_mutations_df, 
+		80, "Mutations_occurring_close_to_TSS_TTS")
+	overlay_plot(tss_only_mutations_df, tts_only_mutations_df, 
+		80, "Mutations_occurring_only_at_TSS_TTS")
+	overlay_plot(tss_only_mutations_df, tss_drip_mutations_df, 
+		80, "Mutations_occurring_only_at_TSS_or_co-occurring_with_TSS_Rloops")
+	overlay_plot(tts_only_mutations_df, tts_drip_mutations_df, 
+		80, "Mutations_occurring_only_at_TTS_or_co-occurring_with_TTS_Rloops")
 
-"""
-fig = ff.create_distplot([li_tts],['rloops_tts'], show_hist = False)
-fig.show()
-"""
-fig = px.histogram(li_tts, nbins=80, title="TTS")
-fig.write_html('MCF7-DRIP-Mutations/tts_rloops_mutations.html')
-"""
-fig = ff.create_distplot([li_tss, li_tts],['rloop_tss', 'rloops_tts'], show_hist = False)
-fig.show()
-"""
-fig = go.Figure()
-fig.add_trace(go.Histogram(x=li_tts, nbinsx=80, name="TTS"))
-fig.add_trace(go.Histogram(x=li_tss, nbinsx=80, name="TSS"))
+	not_drip = tss_only_mutations_df["Mutations_C"].to_list() + tts_only_mutations_df["Mutations_C"].to_list()
+	not_drip_df = pd.DataFrame(not_drip, columns=["Mutations_C"])
+	overlay_plot(drip_mutations_df, not_drip_df, 
+		80, "Mutations_co-occurring_with_Rloops_and_outside_Rloops")
 
-# Overlay both histograms
-fig.update_layout(barmode='overlay')
-# Reduce opacity to see both histograms
-fig.update_traces(opacity=0.75)
-fig.write_html("MCF7-DRIP-Mutations/tss_tts_rloops_mutations.html")
+	drip_mutations_maf = maf.loc[drip_mutations_df.index]
+	tss_drip_mutations_maf = maf.loc[tss_drip_mutations_df.index]
+	tts_drip_mutations_maf = maf.loc[tts_drip_mutations_df.index]
+	tss_only_mutations_maf = maf.loc[tss_only_mutations_df.index]
+	tts_only_mutations_maf = maf.loc[tts_only_mutations_df.index]
 
-#drip_all_df = pd.DataFrame(drip_all, columns=[["Chr", "Start", "End", "Mutations"]])
-#drip_tss_df = pd.DataFrame(drip_tss, columns=[["Chr", "Start", "End", "Mutations"]])
-#drip_tts_df = pd.DataFrame(drip_tts, columns=[["Chr", "Start", "End", "Mutations"]])
+	drip_mutations_df.to_csv("Annotations/MCF7/All/Control/drip_mutations.tsv", sep="\t", index=False)
+	tss_drip_mutations_df.to_csv("Annotations/MCF7/TSS/Control/drip_mutations.tsv", sep="\t", index=False)
+	tts_drip_mutations_df.to_csv("Annotations/MCF7/TTS/Control/drip_mutations.tsv", sep="\t", index=False)
+	tss_mutations_df.to_csv("Annotations/MCF7/TSS/Control/all_tss_mutations.tsv", sep="\t", index=False)
+	tts_mutations_df.to_csv("Annotations/MCF7/TTS/Control/all_tts_mutations.tsv", sep="\t", index=False)
+	tss_only_mutations_df.to_csv("Annotations/MCF7/TSS/Control/only_tss_mutations.tsv", sep="\t", index=False)
+	tts_only_mutations_df.to_csv("Annotations/MCF7/TTS/Control/only_tts_mutations.tsv", sep="\t", index=False)
 
-#drip_all_df.to_csv("Annotations/MCF7/All/drip_all_mck.tsv", sep="\t", index=False)
-#drip_tss_df.to_csv("Annotations/MCF7/TSS/drip_tss_mck.tsv", sep="\t", index=False)
-#drip_tts_df.to_csv("Annotations/MCF7/TTS/drip_tts_mck.tsv", sep="\t", index=False)
+	drip_mutations_maf.to_csv("Data/MCF7-Drip/All/Control/drip_mutations.maf", sep="\t", index=False)
+	tss_drip_mutations_maf.to_csv("Data/MCF7-Drip/TSS/Control/drip_mutations.maf", sep="\t", index=False)
+	tts_drip_mutations_maf.to_csv("Data/MCF7-Drip/TTS/Control/drip_mutations.maf", sep="\t", index=False)
+	tss_only_mutations_maf.to_csv("Data/MCF7-Drip/TSS/Control/only_tss_mutations.maf", sep="\t", index=False)
+	tts_only_mutations_maf.to_csv("Data/MCF7-Drip/TTS/Control/only_tts_mutations.maf", sep="\t", index=False)
