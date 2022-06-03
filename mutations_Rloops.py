@@ -65,21 +65,21 @@ if __name__ == '__main__':
 		for i in maf[maf["Chromosome"] == k].index:
 
 			m = maf.loc[i, "Start_Position"]
-			b, loop = binary_search(drip_ranges, m, k)
+			b, loop = Binary_search.binary_search(drip_ranges, m, k)
 			if b == True:
 				drip_mutations.append([k, loop[0], loop[1], m, i])
 
 	for k in tss_ranges.keys():
 		for i in maf[maf["Chromosome"] == k].index:
 			m = maf.loc[i, "Start_Position"]
-			b, guess = binary_search(tss_ranges, m, k)
+			b, guess = Binary_search.binary_search(tss_ranges, m, k)
 			if b == True:
 				tss_mutations.append([k, guess[0], guess[1], m, i])
 
 	for k in tts_ranges.keys():
 		for i in maf[maf["Chromosome"] == k].index:
 			m = maf.loc[i, "Start_Position"]
-			b, guess = binary_search(tts_ranges, m, k)
+			b, guess = Binary_search.binary_search(tts_ranges, m, k)
 			if b == True:
 				tts_mutations.append([k, guess[0], guess[1], m, i])
 
@@ -108,7 +108,7 @@ if __name__ == '__main__':
 	tss_drip_mutations_df = update_df(tss_drip_mutations_df)
 	tts_drip_mutations_df = update_df(tts_drip_mutations_df)
 	tss_mutations_df = update_df(tss_mutations_df)
-	tts_mutations_df = update(tts_mutations_df)
+	tts_mutations_df = update_df(tts_mutations_df)
 	tss_only_mutations_df = update_df(tss_only_mutations_df)
 	tts_only_mutations_df = update_df(tts_only_mutations_df)
 
