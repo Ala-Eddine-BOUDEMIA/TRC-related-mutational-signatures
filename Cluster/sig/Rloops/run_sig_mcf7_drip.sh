@@ -1,0 +1,25 @@
+#!/bin/bash
+## Torque Configuration
+# resources
+#PBS -l walltime=72:00:00
+#PBS -l mem=16gb
+#PBS -l nodes=1:ppn=12
+#PBS -q batch
+
+
+# Information
+#PBS -N sig_mcf7_drip
+
+source /data/tmp/aboudemi/profile.sh
+
+mkdir -p /data/tmp/aboudemi/Mutational_Signatures/MCF7/All/E2-2h
+mkdir /local/scratch/mutational_signatures_mcf7_all_E2-2h
+
+cp -r /data/tmp/aboudemi/Mutational_Profiles /local/scratch/mutational_signatures_mcf7_all_E2-2h
+cp /data/tmp/aboudemi/*.py /local/scratch/mutational_signatures_mcf7_all_E2-2h
+
+source env/bin/activate
+python /local/scratch/mutational_signatures_mcf7_all_E2-2h/extract_sigs.py --dataset MCF7 --region All --state E2-2h --num_signatures 5 --cluster 
+
+cp -r /local/scratch/mutational_signatures_mcf7_all_E2-2h/Mutational_Signatures/MCF7/All/E2-2h/* /data/tmp/aboudemi/Mutational_Signatures/MCF7/All/E2-2h/
+rm -r /local/scratch/mutational_signatures_mcf7_all_E2-2h
