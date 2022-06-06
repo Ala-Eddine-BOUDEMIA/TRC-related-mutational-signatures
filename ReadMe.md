@@ -2,7 +2,7 @@
 
 ## M2 Internship - [Replication Program and Genome Instability Team](https://institut-curie.org/team/chen)
 
-![Solid visualization](ReadMe_Images/logos.png)
+![Solid visualization](ReadMe_Images/Logos.png)
 
 # Table of Contents
 
@@ -25,11 +25,11 @@ The RNA-Seq data was obtained from the [recount2 website](https://jhubiostatisti
 The data should be organized as follow:
 
     TRC-related-mutational-signatures
-									└─── Data
-											└─── dataset (BRCA or BLCA) 				
-																	└──── Original 
-																				└──── All
-																						└──── (brca or blca).maf
+				└─── Data
+					└─── dataset (BRCA or BLCA) 				
+						└──── Original 
+							└──── All
+								└──── (brca or blca).maf
 
 # Requirements
 
