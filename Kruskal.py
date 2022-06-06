@@ -41,7 +41,6 @@ def between_groups():
 		path_group1 = path0 + path2 + name
 		path_group2 = path1 + path2 + name
 
-
 		group1 = pd.read_csv(path_group1, index_col=0, sep="\t")
 		group2 = pd.read_csv(path_group2, index_col=0, sep="\t")
 		
