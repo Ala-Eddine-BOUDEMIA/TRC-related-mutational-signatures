@@ -224,55 +224,55 @@ if __name__ == '__main__':
 	plot(active_tts_only_mutations_df, 160, "Mutations_occuring_only_at_active_TTS_regions")
 	plot(inactive_tts_only_mutations_df, 160, "Mutations_occuring_only_at_inactive_TTS_regions")
 
-	overlay_plot(active_tss_mutations_df, inactive_tss_mutations_df
+	overlay_plot(active_tss_mutations_df, inactive_tss_mutations_df,
 		160, 160, "TSS-active", "TSS-inactive", 
 		"Mutations_occurring_at_active_inactive_TSS")
-	overlay_plot(active_tts_mutations_df, inactive_tts_mutations_df
+	overlay_plot(active_tts_mutations_df, inactive_tts_mutations_df,
 		160, 160, "TTS-active", "TTS-inactive", 
 		"Mutations_occurring_at_active_inactive_TTS")
-	overlay_plot(active_tts_mutations_df, active_tss_mutations_df
+	overlay_plot(active_tts_mutations_df, active_tss_mutations_df,
 		160, 160, "TTS-active", "TSS-active", 
 		"Mutations_occurring_at_active_TSS_TTS")
-	overlay_plot(inactive_tts_mutations_df, inactive_tss_mutations_df
+	overlay_plot(inactive_tts_mutations_df, inactive_tss_mutations_df,
 		160, 160, "TTS-inactive", "TSS-inactive", 
 		"Mutations_occurring_at_inactive_TSS_TTS")
 
-	overlay_plot(active_tss_drip_mutations_df, inactive_tss_drip_mutations_df
+	overlay_plot(active_tss_drip_mutations_df, inactive_tss_drip_mutations_df,
 		80, 80, "TSS-active-Rloops", "TSS-inactive-Rloops", 
 		"Mutations_occurring_at_active_inactive_TSS_Rloops")
-	overlay_plot(active_tts_drip_mutations_df, inactive_tts_drip_mutations_df
+	overlay_plot(active_tts_drip_mutations_df, inactive_tts_drip_mutations_df,
 		80, 80, "TTS-active-Rloops", "TTS-inactive-Rloops", 
 		"Mutations_occurring_at_active_inactive_TTS_Rloops")
-	overlay_plot(active_tts_drip_mutations_df, active_tss_drip_mutations_df
+	overlay_plot(active_tts_drip_mutations_df, active_tss_drip_mutations_df,
 		80, 80, "TTS-active-Rloops", "TSS-active-Rloops", 
 		"Mutations_occurring_at_active_TSS_TTS_Rloops")
-	overlay_plot(inactive_tts_drip_mutations_df, inactive_tss_drip_mutations_df
+	overlay_plot(inactive_tts_drip_mutations_df, inactive_tss_drip_mutations_df,
 		80, 80, "TTS-inactive-Rloops", "TSS-inactive-Rloops", 
 		"Mutations_occurring_at_inactive_TSS_TTS_Rloops")
 
-	overlay_plot(active_tss_only_mutations_df, inactive_tss_only_mutations_df
+	overlay_plot(active_tss_only_mutations_df, inactive_tss_only_mutations_df,
 		160, 160, "TSS-active-only", "TSS-inactive-only", 
 		"Mutations_occurring_at_active_inactive_TSS_only")
-	overlay_plot(active_tts_only_mutations_df, inactive_tts_only_mutations_df
+	overlay_plot(active_tts_only_mutations_df, inactive_tts_only_mutations_df,
 		160, 160, "TTS-active-only", "TTS-inactive-only", 
 		"Mutations_occurring_at_active_inactive_TTS_only")
-	overlay_plot(active_tts_only_mutations_df, active_tss_only_mutations_df
+	overlay_plot(active_tts_only_mutations_df, active_tss_only_mutations_df,
 		160, 160, "TTS-active-only", "TSS-active-only", 
 		"Mutations_occurring_at_active_TSS_TTS_only")
-	overlay_plot(inactive_tts_only_mutations_df, inactive_tss_only_mutations_df
+	overlay_plot(inactive_tts_only_mutations_df, inactive_tss_only_mutations_df,
 		160, 160, "TTS-inactive-only", "TSS-inactive-only", 
 		"Mutations_occurring_at_inactive_TSS_TTS_only")
 
-	overlay_plot(active_tss_only_mutations_df, active_tss_drip_mutations_df
+	overlay_plot(active_tss_only_mutations_df, active_tss_drip_mutations_df,
 		160, 80, "TSS-active-only", "TSS-active-Rloops", 
 		"Mutations_occurring_at_active_TSS_and_Rloops_TSS")
-	overlay_plot(active_tts_only_mutations_df, active_tts_drip_mutations_df
+	overlay_plot(active_tts_only_mutations_df, active_tts_drip_mutations_df,
 		160, 80, "TTS-active-only", "TTS-active-Rloops", 
 		"Mutations_occurring_at_active_TTS_andRloops_TTS")
-	overlay_plot(inactive_tss_only_mutations_df, inactive_tss_drip_mutations_df
+	overlay_plot(inactive_tss_only_mutations_df, inactive_tss_drip_mutations_df,
 		160, 80, "TSS-inactive-only", "TSS-inactive-Rloops", 
 		"Mutations_occurring_at_inactive_TSS_and_Rloops_TSS")
-	overlay_plot(inactive_tts_only_mutations_df, inactive_tts_drip_mutations_df
+	overlay_plot(inactive_tts_only_mutations_df, inactive_tts_drip_mutations_df,
 		160, 80, "TTS-inactive-only", "TTS-inactive-Rloops", 
 		"Mutations_occurring_at_inactive_TTS_andRloops_TTS")
 	
