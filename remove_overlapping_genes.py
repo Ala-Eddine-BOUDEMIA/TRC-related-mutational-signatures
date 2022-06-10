@@ -8,7 +8,7 @@ def remove_overlaps(protein_coding_genes, non_overlapping_genes,
 	non_overlapping_genes_plus, non_overlapping_genes_minus):
 
 	genes = pd.read_csv(protein_coding_genes, header=0, sep="\t")
-	if Config.args.strand == True:
+	if Config.args.strand == False:
 		genes = genes.sort_values(["Chr", "Start", "End"]).reset_index(drop=True)
 	else:
 		genes = genes.sort_values(["Strand", "Chr", "Start", "End"]).reset_index(drop=True)
