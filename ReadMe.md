@@ -66,3 +66,32 @@ cd TRC-related-mutational-signatures
 # Pipeline
 
 ![Solid visualization](ReadMe_Images/Pipeline.png)
+
+## Step 1 
+
+- Data acquisition from TCGA as MAF files and signature extraction using SigProfiler. 
+
+## Step 2 
+
+- Extracting the coordinates of protein coding genes and their TSS and TTS regions.
+- Attribute mutations to each region.
+- Signature extraction using SigProfiler.
+
+## Step 3 
+
+- Defining active and inactive genes in each cohort.
+- Separate TSS and TTS regions to active and inactive.
+- Attribute mutations to each region.
+- Signature extraction using SigProfiler. 
+
+## Step 4 
+
+- Defining gene pairs that are in a co-directional, divergent or convergent orientations.
+- Extract the coordinates of the regions between them.
+- Attribute mutations to each region.
+- Signature extraction using SigProfiler.
+
+## Step 5 
+
+- Attribute mutations to regions with and without R-loops.
+- Signature extraction using SigProfiler.
