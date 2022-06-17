@@ -5,7 +5,7 @@ from scipy.stats import kruskal
 def same_group():
 
 	for dataset in ["BRCA", "BLCA"]:
-		path1 = "Mutational_Signatures/" + dataset + "/Remain/inactive/SBS96/"
+		path1 = "Mutational_Signatures_V2/" + dataset + "/Divergent/All/SBS96/"
 		path2 = "Suggested_Solution/COSMIC_SBS96_Decomposed_Solution/Activities/"
 		name = "COSMIC_SBS96_Activities.txt"
 		path = path1 + path2 + name
@@ -28,7 +28,7 @@ def same_group():
 		results_df = pd.DataFrame(results, columns=["A", "B", "Mean_A", "Mean_B", 
 			"H-statistic", "P-value", "Decision"])
 
-		results_df.to_csv("Kruskal/" + dataset + "/Remain/inactive/H-statistic.tsv", sep="\t")
+		results_df.to_csv("Kruskal/" + dataset + "/Divergent/H-statistic_V2.tsv", sep="\t")
 		print(results_df)
 
 def between_groups():
@@ -69,5 +69,5 @@ def between_groups():
 
 
 if __name__ == '__main__':
-	#same_group()
-	between_groups()
+	same_group()
+	#between_groups()
