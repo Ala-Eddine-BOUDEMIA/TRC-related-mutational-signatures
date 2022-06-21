@@ -3,6 +3,7 @@
 *.gtf
 *.gff3
 *.bw
+Annotations/
 Data/
 __pycache__/
 MAF_Analysis/.Rhistory
