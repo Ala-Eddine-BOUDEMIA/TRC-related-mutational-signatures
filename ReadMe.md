@@ -55,7 +55,7 @@ sudo pip3 install -r requirements.txt
 ## Download repository:
 
 ```
-https://github.com/Ala-Eddine-BOUDEMIA/TRC-related-mutational-signatures
+git clone https://github.com/Ala-Eddine-BOUDEMIA/TRC-related-mutational-signatures
 ```
 
 
