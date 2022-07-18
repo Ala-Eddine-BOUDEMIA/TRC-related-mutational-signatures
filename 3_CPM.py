@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.express as px
 
 import Config 
+import Tools
 
 def cpm(dataset, metadata):
 
@@ -33,12 +34,8 @@ def cpm(dataset, metadata):
     active_genes = cpm[cpm["Average_expression"] >= 1].index
     inactive_genes = cpm[cpm["Average_expression"] < 1].index
 
-    """
-    fig = px.box(cpm, y="Average_expression")
-    fig.show()
-    fig = px.box(np.log10(cpm+1), y="Average_expression")
-    fig.show()
-    """
+    for i in ["Active_genes", "Inactive_genes"]:
+        Tools.create_folder("Annotations/" + dataset + "/" + i)
 
     pd.Series(active_genes).to_csv("Annotations/" + dataset + "/Active_genes/all_active_genes.tsv", sep = "\t", index = False)
     pd.Series(inactive_genes).to_csv("Annotations/" + dataset + "/Inactive_genes/all_inactive_genes.tsv", sep = "\t", index = False)

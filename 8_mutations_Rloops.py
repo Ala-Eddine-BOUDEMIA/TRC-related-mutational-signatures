@@ -4,9 +4,8 @@ import plotly.figure_factory as ff
 import plotly.graph_objects as go
 
 import Config
-import Binary_search
-import Remove_overlaps
-import Ranges_extractor
+import Tools
+
 
 def update_df(df):
 	
@@ -15,15 +14,20 @@ def update_df(df):
 	df["Middle"] = (df["Start"] + df["End"])//2
 	df["Start_C"] = df["Start"] - df["Middle"]
 	df["End_C"] = df["End"] - df["Middle"]
-	df["Mutations_C"] = df["Mutation"] - df["Middle"]
+	df["Mutation_C"] = df["Mutation"] - df["Middle"]
+
 	return df
+
 
 def plot(df, bins, titre):
 	
-	fig = px.histogram(df["Mutations_C"].values,
+	fig = px.histogram(df["Mutation_C"].values,
 	                nbins=bins, title = titre)
+
+	Tools.create_folder("MCF7-DRIP-Mutations/E2-2h")
 	path = "MCF7-DRIP-Mutations/E2-2h/" + titre + ".html"
 	fig.write_html(path)
+
 
 def overlay_plot(df1, df2, bins1, bins2, name1, name2, titre):
 
@@ -36,6 +40,7 @@ def overlay_plot(df1, df2, bins1, bins2, name1, name2, titre):
 	path = "MCF7-DRIP-Mutations/E2-2h/" + titre + ".html"
 	fig.write_html(path)
 
+
 if __name__ == '__main__':
 
 	maf = pd.read_csv("Data/BRCA/Original/brca.maf", header=5, sep="\t")
@@ -44,39 +49,44 @@ if __name__ == '__main__':
 	tss = pd.read_csv(Config.args.tss, sep="\t")
 	tss["Start"] = tss["Start"] - 1000
 	tss["End"] = tss["End"] + 1000
+	tss[tss["Strand"] == "-"] = -1
+	tss[tss["Strand"] == "+"] = 1
 	
 	tts = pd.read_csv(Config.args.tts, sep="\t")
 	tts["Start"] = tts["Start"] - 1000
 	tts["End"] = tts["End"] + 1000
+	tts[tts["Strand"] == "-"] = -1
+	tts[tts["Strand"] == "+"] = 1
 
-	active_brca_tss = pd.read_csv("Annotations/BRCA/TSS/active_tss.tsv", sep="\t") 
-	active_brca_tss["Start"] = active_brca_tss["Start"] - 1000
-	active_brca_tss["End"] = active_brca_tss["End"] + 1000
+	active_tss = pd.read_csv("Annotations/BRCA/TSS/active_tss.tsv", sep="\t") 
+	active_tss["Start"] = active_tss["Start"] - 1000
+	active_tss["End"] = active_tss["End"] + 1000
 	
-	inactive_brca_tss = pd.read_csv("Annotations/BRCA/TSS/inactive_tss.tsv", sep="\t") 
-	inactive_brca_tss["Start"] = inactive_brca_tss["Start"] - 1000
-	inactive_brca_tss["End"] = inactive_brca_tss["End"] + 1000
+	inactive_tss = pd.read_csv("Annotations/BRCA/TSS/inactive_tss.tsv", sep="\t") 
+	inactive_tss["Start"] = inactive_tss["Start"] - 1000
+	inactive_tss["End"] = inactive_tss["End"] + 1000
 
-	active_brca_tts = pd.read_csv("Annotations/BRCA/TTS/active_tts.tsv", sep="\t") 
-	active_brca_tts["Start"] = active_brca_tts["Start"] - 1000
-	active_brca_tts["End"] = active_brca_tts["End"] + 1000
+	active_tts = pd.read_csv("Annotations/BRCA/TTS/active_tts.tsv", sep="\t") 
+	active_tts["Start"] = active_tts["Start"] - 1000
+	active_tts["End"] = active_tts["End"] + 1000
 	
-	inactive_brca_tts = pd.read_csv("Annotations/BRCA/TTS/inactive_tts.tsv", sep="\t") 
-	inactive_brca_tts["Start"] = inactive_brca_tts["Start"] - 1000
-	inactive_brca_tts["End"] = inactive_brca_tts["End"] + 1000
+	inactive_tts = pd.read_csv("Annotations/BRCA/TTS/inactive_tts.tsv", sep="\t") 
+	inactive_tts["Start"] = inactive_tts["Start"] - 1000
+	inactive_tts["End"] = inactive_tts["End"] + 1000
 
 	drip = pd.read_csv("Data/MCF7/BED_Files/mcf7-2h.bed", sep="\t")
 	drip["Length"] = drip["End"] - drip["Start"]
 	drip = drip.sort_values(["Chr", "Start"])
 
-	tss_ranges = Ranges_extractor.extract_ranges(tss)
-	tts_ranges = Ranges_extractor.extract_ranges(tts) 
-	active_tss_ranges = Ranges_extractor.extract_ranges(active_brca_tss)
-	inactive_tss_ranges = Ranges_extractor.extract_ranges(inactive_brca_tss)
-	active_tts_ranges = Ranges_extractor.extract_ranges(active_brca_tts)
-	inactive_tts_ranges = Ranges_extractor.extract_ranges(inactive_brca_tts)
-	drip_ranges = Ranges_extractor.extract_ranges(drip)
-	drip_ranges = Remove_overlaps.remove_overlaps(drip_ranges)
+	tss_ranges = Tools.extract_ranges(tss)
+	tts_ranges = Tools.extract_ranges(tts) 
+	active_tss_ranges = Tools.extract_ranges(active_tss)
+	inactive_tss_ranges = Tools.extract_ranges(inactive_tss)
+	active_tts_ranges = Tools.extract_ranges(active_tts)
+	inactive_tts_ranges = Tools.extract_ranges(inactive_tts)
+	drip_ranges = Tools.extract_ranges(drip)
+
+	drip_ranges = Tools.remove_overlaps(drip_ranges)
 
 	drip_mutations = []
 	tss_mutations = []
@@ -194,6 +204,26 @@ if __name__ == '__main__':
 	active_tts_only_mutations_df = update_df(active_tts_only_mutations_df)
 	inactive_tts_only_mutations_df = update_df(inactive_tts_only_mutations_df)
 
+	tss_mutations_df = tss_mutations_df.merge(tss, on = ["Chr", "Start", "End"], how="left")
+	tss_mutations_df["Mutation_C"] = tss_mutations_df["Mutation_C"] * tss_mutations_df["Strand"]
+	tts_mutations_df = tts_mutations_df.merge(tts, on = ["Chr", "Start", "End"], how="left")
+	tts_mutations_df["Mutation_C"] = tts_mutations_df["Mutation_C"] * tts_mutations_df["Strand"]
+
+	tss_only_mutations_df = tss_only_mutations_df.merge(tss, on = ["Chr", "Start", "End"], how="left")
+	tss_only_mutations_df["Mutation_C"] = tss_only_mutations_df["Mutation_C"] * tss_only_mutations_df["Strand"]
+	tts_only_mutations_df = tts_only_mutations_df.merge(tts, on = ["Chr", "Start", "End"], how="left")
+	tts_only_mutations_df["Mutation_C"] = tts_only_mutations_df["Mutation_C"] * tts_only_mutations_df["Strand"]
+
+	active_tss_mutations_df = active_tss_mutations_df.merge(tss, on = ["Chr", "Start", "End"], how="left")
+	active_tss_mutations_df["Mutation_C"] = active_tss_mutations_df["Mutation_C"] * active_tss_mutations_df["Strand"]
+	active_tts_mutations_df = active_tts_mutations_df.merge(tts, on = ["Chr", "Start", "End"], how="left")
+	active_tts_mutations_df["Mutation_C"] = active_tts_mutations_df["Mutation_C"] * active_tts_mutations_df["Strand"]
+
+	inactive_tss_mutations_df = inactive_tss_mutations_df.merge(tss, on = ["Chr", "Start", "End"], how="left")
+	inactive_tss_mutations_df["Mutation_C"] = inactive_tss_mutations_df["Mutation_C"] * inactive_tss_mutations_df["Strand"]
+	inactive_tts_mutations_df = inactive_tts_mutations_df.merge(tts, on = ["Chr", "Start", "End"], how="left")
+	inactive_tts_mutations_df["Mutation_C"] = inactive_tts_mutations_df["Mutation_C"] * inactive_tts_mutations_df["Strand"]
+
 	plot(drip_mutations_df, 80, "Mutations_Co-occurring_with_R-Loops")
 	plot(tss_mutations_df, 160, "Mutations_occurring_at_TSS_regions")
 	plot(tts_mutations_df, 160, "Mutations_occurring_at_TTS_regions")
@@ -202,9 +232,9 @@ if __name__ == '__main__':
 	plot(tss_only_mutations_df, 160, "Mutations_occurring_only_at_TSS_regions")
 	plot(tts_only_mutations_df, 160, "Mutations_occurring_only_at_TTS_regions")
 	
-	plot(active_tss_mutations_df, 80, "Mutations_occuring_at_active_TSS_regions")
+	plot(active_tss_mutations_df, 160, "Mutations_occuring_at_active_TSS_regions")
 	plot(inactive_tss_mutations_df, 80, "Mutations_occuring_at_inactive_TSS_regions")
-	plot(active_tts_mutations_df, 80, "Mutations_occuring_at_active_TTS_regions")
+	plot(active_tts_mutations_df, 160, "Mutations_occuring_at_active_TTS_regions")
 	plot(inactive_tts_mutations_df, 80, "Mutations_occuring_at_inactive_TTS_regions")
 	
 	plot(active_tss_drip_mutations_df, 80, "Mutations_Co-occuring_R-Loops_at_active_TSS_regions")
@@ -285,8 +315,8 @@ if __name__ == '__main__':
 		160, 80, "TTS-only", "TTS-Rloops", 
 		"Mutations_occurring_only_at_TTS_or_co-occurring_with_TTS_Rloops")
 
-	not_drip = tss_only_mutations_df["Mutations_C"].to_list() + tts_only_mutations_df["Mutations_C"].to_list()
-	not_drip_df = pd.DataFrame(not_drip, columns=["Mutations_C"])
+	not_drip = tss_only_mutations_df["Mutation_C"].to_list() + tts_only_mutations_df["Mutation_C"].to_list()
+	not_drip_df = pd.DataFrame(not_drip, columns=["Mutation_C"])
 	overlay_plot(not_drip_df, drip_mutations_df,
 		160, 80, "Not-Rloops", "Rloops", 
 		"Mutations_co-occurring_with_Rloops_and_outside_Rloops")
@@ -297,6 +327,7 @@ if __name__ == '__main__':
 	tss_only_mutations_maf = maf.loc[tss_only_mutations_df.index]
 	tts_only_mutations_maf = maf.loc[tts_only_mutations_df.index]
 
+	Tools.create_folder("Annotations/MCF7/All/E2-2h")
 	drip_mutations_df.to_csv("Annotations/MCF7/All/E2-2h/drip_mutations.tsv", sep="\t", index=False)
 	tss_drip_mutations_df.to_csv("Annotations/MCF7/TSS/E2-2h/drip_mutations.tsv", sep="\t", index=False)
 	tts_drip_mutations_df.to_csv("Annotations/MCF7/TTS/E2-2h/drip_mutations.tsv", sep="\t", index=False)
@@ -317,6 +348,9 @@ if __name__ == '__main__':
 	active_tts_only_mutations_df.to_csv("Annotations/MCF7/TTS/E2-2h/active_tts_only_mutations.tsv", sep="\t", index=False)
 	inactive_tts_only_mutations_df.to_csv("Annotations/MCF7/TTS/E2-2h/inactive_tts_only_mutations.tsv", sep="\t", index=False)
 
+	Tools.create_folder("Data/MCF7/All/E2-2h")
+	Tools.create_folder("Data/MCF7/TSS/E2-2h")
+	Tools.create_folder("Data/MCF7/TTS/E2-2h")
 	drip_mutations_maf.to_csv("Data/MCF7/All/E2-2h/drip_mutations.maf", sep="\t", index=False)
 	tss_drip_mutations_maf.to_csv("Data/MCF7/TSS/E2-2h/drip_mutations.maf", sep="\t", index=False)
 	tts_drip_mutations_maf.to_csv("Data/MCF7/TTS/E2-2h/drip_mutations.maf", sep="\t", index=False)

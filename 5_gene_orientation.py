@@ -2,9 +2,7 @@ import pandas as pd
 import plotly.express as px
 
 import Config
-
-#pd.set_option('display.max_rows', None)
-#pd.set_option('display.max_columns', None)
+import Tools
 
 def regions_classification(genes, chromes):
 	
@@ -62,6 +60,10 @@ def regions_classification(genes, chromes):
 	conv = df[df["Region_Type"] == "C"]
 	div = df[df["Region_Type"] == "D"]
 	tand = df[df["Region_Type"] == "T"]
+
+	Tools.create_folder("/".join(Config.args.conv.split("/")[:-1]))
+	Tools.create_folder("/".join(Config.args.div.split("/")[:-1]))
+	Tools.create_folder("/".join(Config.args.tand.split("/")[:-1]))
 
 	conv.to_csv(Config.args.conv, 
 		sep = "\t", index = False)
