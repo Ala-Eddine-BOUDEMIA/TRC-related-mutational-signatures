@@ -8,7 +8,7 @@ pd.set_option('display.max_rows', None)
 def remove_overlaps(protein_coding_genes, non_overlapping_genes,
 	non_overlapping_genes_plus, non_overlapping_genes_minus):
 	
-	Tools.create_folder("/".join(non_overlapping_genes.split("/")[:-1]))
+	Tools.create_folder("/".join(str(non_overlapping_genes).split("/")[:-1]))
 
 	genes = pd.read_csv(protein_coding_genes, header=0, sep="\t")
 	if Config.args.strand == False:

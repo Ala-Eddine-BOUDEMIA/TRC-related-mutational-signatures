@@ -61,9 +61,9 @@ def regions_classification(genes, chromes):
 	div = df[df["Region_Type"] == "D"]
 	tand = df[df["Region_Type"] == "T"]
 
-	Tools.create_folder("/".join(Config.args.conv.split("/")[:-1]))
-	Tools.create_folder("/".join(Config.args.div.split("/")[:-1]))
-	Tools.create_folder("/".join(Config.args.tand.split("/")[:-1]))
+	Tools.create_folder("/".join(str(Config.args.conv).split("/")[:-1]))
+	Tools.create_folder("/".join(str(Config.args.div).split("/")[:-1]))
+	Tools.create_folder("/".join(str(Config.args.tand).split("/")[:-1]))
 
 	conv.to_csv(Config.args.conv, 
 		sep = "\t", index = False)
