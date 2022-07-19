@@ -24,20 +24,20 @@ def plot(df, bins, titre):
 	fig = px.histogram(df["Mutation_C"].values,
 	                nbins=bins, title = titre)
 
-	Tools.create_folder("MCF7-DRIP-Mutations/E2-2h")
-	path = "MCF7-DRIP-Mutations/E2-2h/" + titre + ".html"
+	Tools.create_folder("MCF7-DRIP-Mutations/E2-24h")
+	path = "MCF7-DRIP-Mutations/E2-24h/" + titre + ".html"
 	fig.write_html(path)
 
 
 def overlay_plot(df1, df2, bins1, bins2, name1, name2, titre):
 
 	fig = go.Figure()
-	fig.add_trace(go.Histogram(x=df1["Mutations_C"].values, nbinsx=bins1, name=name1))
-	fig.add_trace(go.Histogram(x=df2["Mutations_C"].values, nbinsx=bins2, name=name2))
+	fig.add_trace(go.Histogram(x=df1["Mutation_C"].values, nbinsx=bins1, name=name1))
+	fig.add_trace(go.Histogram(x=df2["Mutation_C"].values, nbinsx=bins2, name=name2))
 
 	fig.update_layout(barmode='overlay')
 	fig.update_traces(opacity=0.75)
-	path = "MCF7-DRIP-Mutations/E2-2h/" + titre + ".html"
+	path = "MCF7-DRIP-Mutations/E2-24h/" + titre + ".html"
 	fig.write_html(path)
 
 
@@ -49,14 +49,16 @@ if __name__ == '__main__':
 	tss = pd.read_csv(Config.args.tss, sep="\t")
 	tss["Start"] = tss["Start"] - 1000
 	tss["End"] = tss["End"] + 1000
-	tss[tss["Strand"] == "-"] = -1
-	tss[tss["Strand"] == "+"] = 1
-	
+	tss["Strand"] = tss["Strand"].replace(["-"],-1)
+	tss["Strand"] = tss["Strand"].replace(["+"],1)
+	tss = tss.drop_duplicates(subset=["Chr", "Start", "End"])
+
 	tts = pd.read_csv(Config.args.tts, sep="\t")
 	tts["Start"] = tts["Start"] - 1000
 	tts["End"] = tts["End"] + 1000
-	tts[tts["Strand"] == "-"] = -1
-	tts[tts["Strand"] == "+"] = 1
+	tts["Strand"] = tts["Strand"].replace(["-"],-1)
+	tts["Strand"] = tts["Strand"].replace(["+"],1)
+	tts = tts.drop_duplicates(subset=["Chr", "Start", "End"])
 
 	active_tss = pd.read_csv("Annotations/BRCA/TSS/active_tss.tsv", sep="\t") 
 	active_tss["Start"] = active_tss["Start"] - 1000
@@ -74,7 +76,7 @@ if __name__ == '__main__':
 	inactive_tts["Start"] = inactive_tts["Start"] - 1000
 	inactive_tts["End"] = inactive_tts["End"] + 1000
 
-	drip = pd.read_csv("Data/MCF7/BED_Files/mcf7-2h.bed", sep="\t")
+	drip = pd.read_csv("Data/MCF7/BED_Files/mcf7-24h.bed", sep="\t")
 	drip["Length"] = drip["End"] - drip["Start"]
 	drip = drip.sort_values(["Chr", "Start"])
 
@@ -98,51 +100,50 @@ if __name__ == '__main__':
 
 	for k in drip_ranges.keys():
 		for i in maf[maf["Chromosome"] == k].index:
-
 			m = maf.loc[i, "Start_Position"]
-			b, loop = Binary_search.binary_search(drip_ranges, m, k)
+			b, loop = Tools.binary_search(drip_ranges, m, k)
 			if b == True:
 				drip_mutations.append([k, loop[0], loop[1], m, i])
 
 	for k in tss_ranges.keys():
 		for i in maf[maf["Chromosome"] == k].index:
 			m = maf.loc[i, "Start_Position"]
-			b, guess = Binary_search.binary_search(tss_ranges, m, k)
+			b, guess = Tools.binary_search(tss_ranges, m, k)
 			if b == True:
 				tss_mutations.append([k, guess[0], guess[1], m, i])
 
 	for k in tts_ranges.keys():
 		for i in maf[maf["Chromosome"] == k].index:
 			m = maf.loc[i, "Start_Position"]
-			b, guess = Binary_search.binary_search(tts_ranges, m, k)
+			b, guess = Tools.binary_search(tts_ranges, m, k)
 			if b == True:
 				tts_mutations.append([k, guess[0], guess[1], m, i])
 
 	for k in active_tss_ranges.keys():
 		for i in maf[maf["Chromosome"] == k].index:
 			m = maf.loc[i, "Start_Position"]
-			b, guess = Binary_search.binary_search(active_tss_ranges, m, k)
+			b, guess = Tools.binary_search(active_tss_ranges, m, k)
 			if b == True:
 				active_tss_mutations.append([k, guess[0], guess[1], m, i])
 
 	for k in inactive_tss_ranges.keys():
 		for i in maf[maf["Chromosome"] == k].index:
 			m = maf.loc[i, "Start_Position"]
-			b, guess = Binary_search.binary_search(inactive_tss_ranges, m, k)
+			b, guess = Tools.binary_search(inactive_tss_ranges, m, k)
 			if b == True:
 				inactive_tss_mutations.append([k, guess[0], guess[1], m, i])
 
 	for k in active_tts_ranges.keys():
 		for i in maf[maf["Chromosome"] == k].index:
 			m = maf.loc[i, "Start_Position"]
-			b, guess = Binary_search.binary_search(active_tts_ranges, m, k)
+			b, guess = Tools.binary_search(active_tts_ranges, m, k)
 			if b == True:
 				active_tts_mutations.append([k, guess[0], guess[1], m, i])
 
 	for k in inactive_tts_ranges.keys():
 		for i in maf[maf["Chromosome"] == k].index:
 			m = maf.loc[i, "Start_Position"]
-			b, guess = Binary_search.binary_search(inactive_tts_ranges, m, k)
+			b, guess = Tools.binary_search(inactive_tts_ranges, m, k)
 			if b == True:
 				inactive_tts_mutations.append([k, guess[0], guess[1], m, i])
 
@@ -204,25 +205,53 @@ if __name__ == '__main__':
 	active_tts_only_mutations_df = update_df(active_tts_only_mutations_df)
 	inactive_tts_only_mutations_df = update_df(inactive_tts_only_mutations_df)
 
-	tss_mutations_df = tss_mutations_df.merge(tss, on = ["Chr", "Start", "End"], how="left")
+	tss_mutations_df = tss_mutations_df.merge(
+		tss, on = ["Chr", "Start", "End"], how="left").set_index(tss_mutations_df.index)
 	tss_mutations_df["Mutation_C"] = tss_mutations_df["Mutation_C"] * tss_mutations_df["Strand"]
-	tts_mutations_df = tts_mutations_df.merge(tts, on = ["Chr", "Start", "End"], how="left")
+	
+	tts_mutations_df = tts_mutations_df.merge(
+		tts, on = ["Chr", "Start", "End"], how="left").set_index(tts_mutations_df.index)
 	tts_mutations_df["Mutation_C"] = tts_mutations_df["Mutation_C"] * tts_mutations_df["Strand"]
 
-	tss_only_mutations_df = tss_only_mutations_df.merge(tss, on = ["Chr", "Start", "End"], how="left")
+	tss_only_mutations_df = tss_only_mutations_df.merge(
+		tss, on = ["Chr", "Start", "End"], how="left").set_index(tss_only_mutations_df.index)
 	tss_only_mutations_df["Mutation_C"] = tss_only_mutations_df["Mutation_C"] * tss_only_mutations_df["Strand"]
-	tts_only_mutations_df = tts_only_mutations_df.merge(tts, on = ["Chr", "Start", "End"], how="left")
+	
+	tts_only_mutations_df = tts_only_mutations_df.merge(
+		tts, on = ["Chr", "Start", "End"], how="left").set_index(tts_only_mutations_df.index)
 	tts_only_mutations_df["Mutation_C"] = tts_only_mutations_df["Mutation_C"] * tts_only_mutations_df["Strand"]
 
-	active_tss_mutations_df = active_tss_mutations_df.merge(tss, on = ["Chr", "Start", "End"], how="left")
+	active_tss_mutations_df = active_tss_mutations_df.merge(
+		tss, on = ["Chr", "Start", "End"], how="left").set_index(active_tss_mutations_df.index)
 	active_tss_mutations_df["Mutation_C"] = active_tss_mutations_df["Mutation_C"] * active_tss_mutations_df["Strand"]
-	active_tts_mutations_df = active_tts_mutations_df.merge(tts, on = ["Chr", "Start", "End"], how="left")
+	
+	active_tts_mutations_df = active_tts_mutations_df.merge(
+		tts, on = ["Chr", "Start", "End"], how="left").set_index(active_tts_mutations_df.index)
 	active_tts_mutations_df["Mutation_C"] = active_tts_mutations_df["Mutation_C"] * active_tts_mutations_df["Strand"]
 
-	inactive_tss_mutations_df = inactive_tss_mutations_df.merge(tss, on = ["Chr", "Start", "End"], how="left")
+	inactive_tss_mutations_df = inactive_tss_mutations_df.merge(
+		tss, on = ["Chr", "Start", "End"], how="left").set_index(inactive_tss_mutations_df.index)
 	inactive_tss_mutations_df["Mutation_C"] = inactive_tss_mutations_df["Mutation_C"] * inactive_tss_mutations_df["Strand"]
-	inactive_tts_mutations_df = inactive_tts_mutations_df.merge(tts, on = ["Chr", "Start", "End"], how="left")
+	
+	inactive_tts_mutations_df = inactive_tts_mutations_df.merge(
+		tts, on = ["Chr", "Start", "End"], how="left").set_index(inactive_tts_mutations_df.index)
 	inactive_tts_mutations_df["Mutation_C"] = inactive_tts_mutations_df["Mutation_C"] * inactive_tts_mutations_df["Strand"]
+
+	active_tss_only_mutations_df = active_tss_only_mutations_df.merge(
+		tss, on = ["Chr", "Start", "End"], how="left").set_index(active_tss_only_mutations_df.index)
+	active_tss_only_mutations_df["Mutation_C"] = active_tss_only_mutations_df["Mutation_C"] * active_tss_only_mutations_df["Strand"]
+	
+	active_tts_only_mutations_df = active_tts_only_mutations_df.merge(
+		tts, on = ["Chr", "Start", "End"], how="left").set_index(active_tts_only_mutations_df.index)
+	active_tts_only_mutations_df["Mutation_C"] = active_tts_only_mutations_df["Mutation_C"] * active_tts_only_mutations_df["Strand"]
+
+	inactive_tss_only_mutations_df = inactive_tss_only_mutations_df.merge(
+		tss, on = ["Chr", "Start", "End"], how="left").set_index(inactive_tss_only_mutations_df.index)
+	inactive_tss_only_mutations_df["Mutation_C"] = inactive_tss_only_mutations_df["Mutation_C"] * inactive_tss_only_mutations_df["Strand"]
+	
+	inactive_tts_only_mutations_df = inactive_tts_only_mutations_df.merge(
+		tts, on = ["Chr", "Start", "End"], how="left").set_index(inactive_tts_only_mutations_df.index)
+	inactive_tts_only_mutations_df["Mutation_C"] = inactive_tts_only_mutations_df["Mutation_C"] * inactive_tts_only_mutations_df["Strand"]
 
 	plot(drip_mutations_df, 80, "Mutations_Co-occurring_with_R-Loops")
 	plot(tss_mutations_df, 160, "Mutations_occurring_at_TSS_regions")
@@ -327,32 +356,34 @@ if __name__ == '__main__':
 	tss_only_mutations_maf = maf.loc[tss_only_mutations_df.index]
 	tts_only_mutations_maf = maf.loc[tts_only_mutations_df.index]
 
-	Tools.create_folder("Annotations/MCF7/All/E2-2h")
-	drip_mutations_df.to_csv("Annotations/MCF7/All/E2-2h/drip_mutations.tsv", sep="\t", index=False)
-	tss_drip_mutations_df.to_csv("Annotations/MCF7/TSS/E2-2h/drip_mutations.tsv", sep="\t", index=False)
-	tts_drip_mutations_df.to_csv("Annotations/MCF7/TTS/E2-2h/drip_mutations.tsv", sep="\t", index=False)
-	tss_mutations_df.to_csv("Annotations/MCF7/TSS/E2-2h/all_tss_mutations.tsv", sep="\t", index=False)
-	tts_mutations_df.to_csv("Annotations/MCF7/TTS/E2-2h/all_tts_mutations.tsv", sep="\t", index=False)
-	tss_only_mutations_df.to_csv("Annotations/MCF7/TSS/E2-2h/only_tss_mutations.tsv", sep="\t", index=False)
-	tts_only_mutations_df.to_csv("Annotations/MCF7/TTS/E2-2h/only_tts_mutations.tsv", sep="\t", index=False)
-	active_tss_mutations_df.to_csv("Annotations/MCF7/TSS/E2-2h/active_tss_mutations.tsv", sep="\t", index=False)
-	inactive_tss_mutations_df.to_csv("Annotations/MCF7/TSS/E2-2h/inactive_tss_mutations.tsv", sep="\t", index=False)
-	active_tts_mutations_df.to_csv("Annotations/MCF7/TTS/E2-2h/active_tts_mutations.tsv", sep="\t", index=False)
-	inactive_tts_mutations_df.to_csv("Annotations/MCF7/TTS/E2-2h/inactive_tts_mutations.tsv", sep="\t", index=False)
-	active_tss_drip_mutations_df.to_csv("Annotations/MCF7/TSS/E2-2h/active_tss_drip_mutations.tsv", sep="\t", index=False)
-	inactive_tss_drip_mutations_df.to_csv("Annotations/MCF7/TSS/E2-2h/inactive_tss_drip_mutations.tsv", sep="\t", index=False)
-	active_tts_drip_mutations_df.to_csv("Annotations/MCF7/TTS/E2-2h/active_tts_drip_mutations.tsv", sep="\t", index=False)
-	inactive_tts_drip_mutations_df.to_csv("Annotations/MCF7/TTS/E2-2h/inactive_tts_drip_mutations.tsv", sep="\t", index=False)
-	active_tss_only_mutations_df.to_csv("Annotations/MCF7/TSS/E2-2h/active_tss_only_mutations.tsv", sep="\t", index=False)
-	inactive_tss_only_mutations_df.to_csv("Annotations/MCF7/TSS/E2-2h/inactive_tss_only_mutations.tsv", sep="\t", index=False)
-	active_tts_only_mutations_df.to_csv("Annotations/MCF7/TTS/E2-2h/active_tts_only_mutations.tsv", sep="\t", index=False)
-	inactive_tts_only_mutations_df.to_csv("Annotations/MCF7/TTS/E2-2h/inactive_tts_only_mutations.tsv", sep="\t", index=False)
+	Tools.create_folder("Annotations/MCF7/All/E2-24h")
+	Tools.create_folder("Annotations/MCF7/TSS/E2-24h")
+	Tools.create_folder("Annotations/MCF7/TTS/E2-24h")
+	drip_mutations_df.to_csv("Annotations/MCF7/All/E2-24h/drip_mutations.tsv", sep="\t", index=False)
+	tss_drip_mutations_df.to_csv("Annotations/MCF7/TSS/E2-24h/drip_mutations.tsv", sep="\t", index=False)
+	tts_drip_mutations_df.to_csv("Annotations/MCF7/TTS/E2-24h/drip_mutations.tsv", sep="\t", index=False)
+	tss_mutations_df.to_csv("Annotations/MCF7/TSS/E2-24h/all_tss_mutations.tsv", sep="\t", index=False)
+	tts_mutations_df.to_csv("Annotations/MCF7/TTS/E2-24h/all_tts_mutations.tsv", sep="\t", index=False)
+	tss_only_mutations_df.to_csv("Annotations/MCF7/TSS/E2-24h/only_tss_mutations.tsv", sep="\t", index=False)
+	tts_only_mutations_df.to_csv("Annotations/MCF7/TTS/E2-24h/only_tts_mutations.tsv", sep="\t", index=False)
+	active_tss_mutations_df.to_csv("Annotations/MCF7/TSS/E2-24h/active_tss_mutations.tsv", sep="\t", index=False)
+	inactive_tss_mutations_df.to_csv("Annotations/MCF7/TSS/E2-24h/inactive_tss_mutations.tsv", sep="\t", index=False)
+	active_tts_mutations_df.to_csv("Annotations/MCF7/TTS/E2-24h/active_tts_mutations.tsv", sep="\t", index=False)
+	inactive_tts_mutations_df.to_csv("Annotations/MCF7/TTS/E2-24h/inactive_tts_mutations.tsv", sep="\t", index=False)
+	active_tss_drip_mutations_df.to_csv("Annotations/MCF7/TSS/E2-24h/active_tss_drip_mutations.tsv", sep="\t", index=False)
+	inactive_tss_drip_mutations_df.to_csv("Annotations/MCF7/TSS/E2-24h/inactive_tss_drip_mutations.tsv", sep="\t", index=False)
+	active_tts_drip_mutations_df.to_csv("Annotations/MCF7/TTS/E2-24h/active_tts_drip_mutations.tsv", sep="\t", index=False)
+	inactive_tts_drip_mutations_df.to_csv("Annotations/MCF7/TTS/E2-24h/inactive_tts_drip_mutations.tsv", sep="\t", index=False)
+	active_tss_only_mutations_df.to_csv("Annotations/MCF7/TSS/E2-24h/active_tss_only_mutations.tsv", sep="\t", index=False)
+	inactive_tss_only_mutations_df.to_csv("Annotations/MCF7/TSS/E2-24h/inactive_tss_only_mutations.tsv", sep="\t", index=False)
+	active_tts_only_mutations_df.to_csv("Annotations/MCF7/TTS/E2-24h/active_tts_only_mutations.tsv", sep="\t", index=False)
+	inactive_tts_only_mutations_df.to_csv("Annotations/MCF7/TTS/E2-24h/inactive_tts_only_mutations.tsv", sep="\t", index=False)
 
-	Tools.create_folder("Data/MCF7/All/E2-2h")
-	Tools.create_folder("Data/MCF7/TSS/E2-2h")
-	Tools.create_folder("Data/MCF7/TTS/E2-2h")
-	drip_mutations_maf.to_csv("Data/MCF7/All/E2-2h/drip_mutations.maf", sep="\t", index=False)
-	tss_drip_mutations_maf.to_csv("Data/MCF7/TSS/E2-2h/drip_mutations.maf", sep="\t", index=False)
-	tts_drip_mutations_maf.to_csv("Data/MCF7/TTS/E2-2h/drip_mutations.maf", sep="\t", index=False)
-	tss_only_mutations_maf.to_csv("Data/MCF7/TSS/E2-2h/only_tss_mutations.maf", sep="\t", index=False)
-	tts_only_mutations_maf.to_csv("Data/MCF7/TTS/E2-2h/only_tts_mutations.maf", sep="\t", index=False)
+	Tools.create_folder("Data/MCF7/All/E2-24h")
+	Tools.create_folder("Data/MCF7/TSS/E2-24h")
+	Tools.create_folder("Data/MCF7/TTS/E2-24h")
+	drip_mutations_maf.to_csv("Data/MCF7/All/E2-24h/drip_mutations.maf", sep="\t", index=False)
+	tss_drip_mutations_maf.to_csv("Data/MCF7/TSS/E2-24h/drip_mutations.maf", sep="\t", index=False)
+	tts_drip_mutations_maf.to_csv("Data/MCF7/TTS/E2-24h/drip_mutations.maf", sep="\t", index=False)
+	tss_only_mutations_maf.to_csv("Data/MCF7/TSS/E2-24h/only_tss_mutations.maf", sep="\t", index=False)
+	tts_only_mutations_maf.to_csv("Data/MCF7/TTS/E2-24h/only_tts_mutations.maf", sep="\t", index=False)
