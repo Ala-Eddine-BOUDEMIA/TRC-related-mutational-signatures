@@ -21,7 +21,7 @@ if __name__ == '__main__':
 	
 	dataset = Config.args.dataset
 	state = Config.args.state
-	region_type = "TSS-TTS"
+	region_type = "CO-HO"
 
 	maf = pd.read_csv("Data/" + dataset + "/Original/" + \
 		dataset.lower() + ".maf", header=0, sep="\t")
@@ -81,7 +81,7 @@ if __name__ == '__main__':
 	elif region_type == "CO-HO":
 		
 		conv = pd.read_csv(Config.args.conv, sep = "\t")
-		r_conv = Ranges_extractor.extract_ranges(conv)
+		r_conv = Tools.extract_ranges(conv)
 		index_conv = sort_indeces(r_conv, maf)
 		print("Number of mutations between convergent genes: ", len(index_conv))
 		maf_conv = maf.loc[index_conv]
@@ -89,7 +89,7 @@ if __name__ == '__main__':
 		maf_conv.to_csv("Data/" + dataset + "/Convergent/conv.maf", sep="\t", index=False)
 		
 		div = pd.read_csv(Config.args.div, sep = "\t")
-		r_div = Ranges_extractor.extract_ranges(div)
+		r_div = Tools.extract_ranges(div)
 		index_div = sort_indeces(r_div, maf)
 		print("Number of mutations between divergent genes: ", len(index_div))
 		maf_div = maf.loc[index_div]
@@ -97,7 +97,7 @@ if __name__ == '__main__':
 		maf_div.to_csv("Data/" + dataset + "/Divergent/div.maf", sep="\t", index=False)
 		
 		tand = pd.read_csv(Config.args.tand, sep = "\t")
-		r_tand = Ranges_extractor.extract_ranges(tand)
+		r_tand = Tools.extract_ranges(tand)
 		index_tand = sort_indeces(r_tand, maf)
 		print("Number of mutations between tandent genes: ", len(index_tand))
 		maf_tand = maf.loc[index_tand]
