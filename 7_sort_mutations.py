@@ -21,14 +21,10 @@ if __name__ == '__main__':
 	
 	dataset = Config.args.dataset
 	state = Config.args.state
-	region_type = Config.args.region
-
-	if region_type != "TSS-TTS" or region_type != "CO-HO":
-		print("Warning: Region type is not adapted for this script")
-		print("Please change the parameter in Config or via command line --region")
+	region_type = "TSS-TTS"
 
 	maf = pd.read_csv("Data/" + dataset + "/Original/" + \
-		dataset.lower() + ".maf", header=5, sep="\t")
+		dataset.lower() + ".maf", header=0, sep="\t")
 	maf = maf[maf["Variant_Type"]=="SNP"]
 
 	if region_type == "TSS-TTS":
