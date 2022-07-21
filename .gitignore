@@ -4,6 +4,7 @@
 *.gff3
 *.bw
 Annotations/MCF7/
+Annotations/PCAWG_MCF7/
 Data/
 __pycache__/
 MAF_Analysis/.Rhistory
