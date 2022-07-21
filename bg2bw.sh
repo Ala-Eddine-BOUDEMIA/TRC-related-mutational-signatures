@@ -1,6 +1,8 @@
 python3 make_bedGraph.py
 
-FOLDER="MCF7_DRIP_Profiles/TSS/E2-2h"
+region="TTS"
+E2="E2-24h"
+FOLDER="PCAWG_MCF7_DRIP_Profiles/"$region"/"$E2
 
 for f in $FOLDER/*; do
 
@@ -8,7 +10,7 @@ for f in $FOLDER/*; do
 	extension="${filename##*.}";
 	filename_flat="${filename%.*}";
 	
-	bedtools merge -i $f -c 4 -o sum > "MCF7_DRIP_Profiles/TSS/E2-2h/"$filename_flat"_merged."$extension; 
+	bedtools merge -i $f -c 4 -o sum > "PCAWG_MCF7_DRIP_Profiles/"$region"/"$E2"/"$filename_flat"_merged."$extension; 
 	rm $f
 	
 done;
@@ -19,6 +21,6 @@ for f in $FOLDER/*; do
 	extension="${filename##*.}";
 	filename_flat="${filename%.*}";
 	
-	./bedGraphToBigWig $f hg38.chrom.sizes "MCF7_DRIP_Profiles/TSS/E2-2h/"$filename_flat".bw";
+	./bedGraphToBigWig $f hg38.chrom.sizes "PCAWG_MCF7_DRIP_Profiles/"$region"/"$E2"/"$filename_flat".bw";
 	rm $f;
 done;

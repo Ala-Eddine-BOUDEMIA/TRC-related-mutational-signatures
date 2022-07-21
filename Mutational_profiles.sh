@@ -1,7 +1,10 @@
-mkdir -p MCF7_DRIP_Profiles/Results/Matrices/reference-point/TSS/E2-2h
-mkdir -p MCF7_DRIP_Profiles/Results/Images/reference-point/TSS/E2-2h
+region="TTS"
+E2="E2-24h"
+folder="PCAWG_MCF7_DRIP_Profiles/"$region"/"$E2
+rp=TES
 
-folder="MCF7_DRIP_Profiles/TSS/E2-2h/"
+mkdir -p PCAWG_MCF7_DRIP_Profiles/Results/Matrices/reference-point/$region/$E2
+mkdir -p PCAWG_MCF7_DRIP_Profiles/Results/Images/reference-point/$region/$E2
 
 for f in $folder/*; do
 
@@ -10,14 +13,14 @@ for f in $folder/*; do
 	filename_flat="${filename%.*}";
 
 	computeMatrix reference-point \
-		--referencePoint TSS -b 5000 -a 5000 -bs 100 \
+		--referencePoint $rp -b 5000 -a 5000 -bs 100 \
 	    -R MCF7_DRIP_Profiles/Datasets/coding_genes_hg38_NOV_0kb.bed -S $f \
-	    --skipZeros -o MCF7_DRIP_Profiles/Results/Matrices/reference-point/TSS/E2-2h/$filename_flat"_matrix.gz" \
-	    --outFileSortedRegions MCF7_DRIP_Profiles/Results/Matrices/reference-point/TSS/E2-2h/$filename_flat"_genes.bed";
+	    --skipZeros -o "PCAWG_MCF7_DRIP_Profiles/Results/Matrices/reference-point/"$region"/"$E2"/"$filename_flat"_matrix.gz" \
+	    --outFileSortedRegions "PCAWG_MCF7_DRIP_Profiles/Results/Matrices/reference-point/"$region"/"$E2"/"$filename_flat"_genes.bed";
 
-	plotProfile --matrixFile MCF7_DRIP_Profiles/Results/Matrices/reference-point/TSS/E2-2h/$filename_flat"_matrix.gz" \
-		--outFileName MCF7_DRIP_Profiles/Results/Images/reference-point/TSS/E2-2h/$filename_flat".png" --averageType sum \
-		--samplesLabel $filename_flat \
+	plotProfile --matrixFile "PCAWG_MCF7_DRIP_Profiles/Results/Matrices/reference-point/"$region"/"$E2/$filename_flat"_matrix.gz" \
+		--outFileName "PCAWG_MCF7_DRIP_Profiles/Results/Images/reference-point/"$region"/"$E2"/"$filename_flat".png" --averageType sum \
+		--samplesLabel Mutational_Rate \
 		--plotType se --legendLocation best --perGroup;
 	
 done
