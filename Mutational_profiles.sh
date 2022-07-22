@@ -14,7 +14,7 @@ for f in $folder/*; do
 
 	computeMatrix reference-point \
 		--referencePoint $rp -b 5000 -a 5000 -bs 100 \
-	    -R MCF7_DRIP_Profiles/Datasets/coding_genes_hg38_NOV_0kb.bed -S $f \
+	    -R "PCAWG_MCF7_DRIP_Profiles/Datasets/coding_genes_hg19_NOV_0kb.bed" -S $f \
 	    --skipZeros -o "PCAWG_MCF7_DRIP_Profiles/Results/Matrices/reference-point/"$region"/"$E2"/"$filename_flat"_matrix.gz" \
 	    --outFileSortedRegions "PCAWG_MCF7_DRIP_Profiles/Results/Matrices/reference-point/"$region"/"$E2"/"$filename_flat"_genes.bed";
 

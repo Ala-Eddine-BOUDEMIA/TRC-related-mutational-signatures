@@ -9,16 +9,21 @@ def cpm(dataset, metadata):
 
     counts = pd.read_csv("Data/" + dataset + "/Transcriptomics/" + dataset.lower() + ".tsv", 
         header = 0, index_col = 0, sep = '\t')
-    #gdc_file_id
-    metadata = pd.read_csv(metadata, header=0, index_col="aliquot_id", sep="\t")
-    metadata.index = metadata.index.str.upper()
 
     counts = counts.T
-    counts = counts.join(metadata['histology_abbreviation'])
-    counts = counts[counts['histology_abbreviation'] == 'Breast-AdenoCA']
-    counts.pop('histology_abbreviation')
-    #counts = counts[counts['gdc_cases.samples.sample_type'] == 'Primary Tumor']
-    #counts.pop('gdc_cases.samples.sample_type')
+    if metadata.split("/")[-2] == "PCAWG":
+        metadata = pd.read_csv(metadata, header=0, index_col="aliquot_id", sep="\t")
+        metadata.index = metadata.index.str.upper()
+        counts = counts.join(metadata['histology_abbreviation'])
+        counts = counts[counts['histology_abbreviation'] == 'Breast-AdenoCA']
+        counts.pop('histology_abbreviation')
+        
+    elif metadata.split("/")[-2] == "TCGA":
+        metadata = pd.read_csv(metadata, header=0, index_col="gdc_file_id", sep="\t")
+        metadata.index = metadata.index.str.upper()
+        counts = counts.join(metadata['gdc_cases.samples.sample_type'])
+        counts = counts[counts['gdc_cases.samples.sample_type'] == 'Primary Tumor']
+        counts.pop('gdc_cases.samples.sample_type')
     counts = counts.T
 
     for i in counts.index.to_list():

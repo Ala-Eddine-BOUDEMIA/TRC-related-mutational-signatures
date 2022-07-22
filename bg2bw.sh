@@ -21,6 +21,6 @@ for f in $FOLDER/*; do
 	extension="${filename##*.}";
 	filename_flat="${filename%.*}";
 	
-	./bedGraphToBigWig $f hg38.chrom.sizes "PCAWG_MCF7_DRIP_Profiles/"$region"/"$E2"/"$filename_flat".bw";
+	./bedGraphToBigWig $f hg19.chrom.sizes "PCAWG_MCF7_DRIP_Profiles/"$region"/"$E2"/"$filename_flat".bw";
 	rm $f;
 done;
