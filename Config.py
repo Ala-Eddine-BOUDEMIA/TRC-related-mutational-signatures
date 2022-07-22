@@ -35,42 +35,42 @@ parser.add_argument("--region",
 
 parser.add_argument("--meta",
 	type = Path,
-	default = Path("Annotations/Metadata/TCGA/TCGA.tsv"),
-	help = "Metadata about RNA-seq from TCGA")
+	default = Path("Annotations/Metadata/PCAWG/PCAWG.tsv"),
+	help = "Metadata about RNA-seq from PCAWG")
 
 parser.add_argument("--gff3", 
 	type = Path,
-	default = Path("Annotations/hg38/gff3/grch38.gff3"),
-	help = "GRCh38 gff3 annotation file")
+	default = Path("Annotations/hg37/gff3/grch37.gff3"),
+	help = "GRCh37 gff3 annotation file")
 
 parser.add_argument("--protein_coding_genes", 
 	type = Path,
-	default = Path("Annotations/hg38/All_protein_coding_genes/coding_genes_hg38.bed"),
+	default = Path("Annotations/hg37/All_protein_coding_genes/coding_genes_hg37.bed"),
 	help = "All coding genes extracted from the gff3 file")
 
 parser.add_argument("--non_overlapping_genes", 
 	type = Path,
-	default = Path("Annotations/hg38/non-overlapping_coding_genes/coding_genes_hg38_NOV_0kb.bed"),
+	default = Path("Annotations/hg37/non-overlapping_coding_genes/coding_genes_hg37_NOV_0kb.bed"),
 	help = "File containing only non-overlapping genes")
 
 parser.add_argument("--non_overlapping_genes_plus", 
 	type = Path,
-	default = Path("Annotations/hg38/non-overlapping_coding_genes/coding_genes_plus_hg38_NOV_0kb.bed"),
+	default = Path("Annotations/hg37/non-overlapping_coding_genes/coding_genes_plus_hg37_NOV_0kb.bed"),
 	help = "File containing only non-overlapping genes located on the + strand")
 
 parser.add_argument("--non_overlapping_genes_minus", 
 	type = Path,
-	default = Path("Annotations/hg38/non-overlapping_coding_genes/coding_genes_minus_hg38_NOV_0kb.bed"),
+	default = Path("Annotations/hg37/non-overlapping_coding_genes/coding_genes_minus_hg37_NOV_0kb.bed"),
 	help = "File containing only non-overlapping genes located on the - strand")
 
 parser.add_argument("--tss", 
 	type = Path,
-	default = Path("Annotations/hg38/TSS/tss.tsv"),
+	default = Path("Annotations/hg37/TSS/tss.tsv"),
 	help = "All the TSS regions that were extracted from the coding genes")
 
 parser.add_argument("--tts", 
 	type = Path,
-	default = Path("Annotations/hg38/TTS/tts.tsv"),
+	default = Path("Annotations/hg37/TTS/tts.tsv"),
 	help = "All the TTS regions that were extracted from the coding genes")
 
 parser.add_argument("--active_genes", 
@@ -110,12 +110,12 @@ parser.add_argument("--conv",
 
 parser.add_argument("--div", 
 	type = Path,
-	default = Path("Annotations/hg38/Divergent_genes/div_genes.tsv"),
+	default = Path("Annotations/hg37/Divergent_genes/div_genes.tsv"),
 	help = "Gene pairs in a divergent orientation")
 
 parser.add_argument("--tand", 
 	type = Path,
-	default = Path("Annotations/hg38/Tandem_genes/co_genes.tsv"),
+	default = Path("Annotations/hg37/Tandem_genes/co_genes.tsv"),
 	help = "Gene pairs in a co-directional orientation")
 
 args = parser.parse_args()

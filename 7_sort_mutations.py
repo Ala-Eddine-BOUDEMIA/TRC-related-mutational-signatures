@@ -21,7 +21,7 @@ if __name__ == '__main__':
 	
 	dataset = Config.args.dataset
 	state = Config.args.state
-	region_type = "CO-HO"
+	region_type = "TSS-TTS"
 
 	maf = pd.read_csv("Data/" + dataset + "/Original/" + \
 		dataset.lower() + ".maf", header=0, sep="\t")

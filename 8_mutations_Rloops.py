@@ -6,8 +6,8 @@ import plotly.graph_objects as go
 import Config
 import Tools
 
-E2 = "Control"
-mcf = "MCF7-ctrl"
+E2 = "E2-24h"
+mcf = "MCF7-24h"
 
 def update_df(df):
 	

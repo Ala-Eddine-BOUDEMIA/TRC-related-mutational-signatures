@@ -9,14 +9,16 @@ def cpm(dataset, metadata):
 
     counts = pd.read_csv("Data/" + dataset + "/Transcriptomics/" + dataset.lower() + ".tsv", 
         header = 0, index_col = 0, sep = '\t')
-
-    metadata = pd.read_csv(metadata, header=0, index_col="gdc_file_id", sep="\t")
+    #gdc_file_id
+    metadata = pd.read_csv(metadata, header=0, index_col="aliquot_id", sep="\t")
     metadata.index = metadata.index.str.upper()
 
     counts = counts.T
-    counts = counts.join(metadata['gdc_cases.samples.sample_type'])
-    counts = counts[counts['gdc_cases.samples.sample_type'] == 'Primary Tumor']
-    counts.pop('gdc_cases.samples.sample_type')
+    counts = counts.join(metadata['histology_abbreviation'])
+    counts = counts[counts['histology_abbreviation'] == 'Breast-AdenoCA']
+    counts.pop('histology_abbreviation')
+    #counts = counts[counts['gdc_cases.samples.sample_type'] == 'Primary Tumor']
+    #counts.pop('gdc_cases.samples.sample_type')
     counts = counts.T
 
     for i in counts.index.to_list():
@@ -31,8 +33,11 @@ def cpm(dataset, metadata):
     cpm = counts.loc[:,:].div(total) 
     cpm['Average_expression'] = cpm.mean(axis = 1)
 
-    active_genes = cpm[cpm["Average_expression"] >= 1].index
-    inactive_genes = cpm[cpm["Average_expression"] < 1].index
+    fig = px.box(cpm["Average_expression"])
+    fig.show()
+    
+    active_genes = cpm[cpm["Average_expression"] >= 0.1].index
+    inactive_genes = cpm[cpm["Average_expression"] < 0.1].index
 
     for i in ["Active_genes", "Inactive_genes"]:
         Tools.create_folder("Annotations/" + dataset + "/" + i)

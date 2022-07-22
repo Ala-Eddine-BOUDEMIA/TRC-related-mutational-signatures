@@ -1,5 +1,5 @@
 region="TTS"
-E2="E2-24h"
+E2="E2-2h"
 folder="PCAWG_MCF7_DRIP_Profiles/"$region"/"$E2
 rp=TES
 

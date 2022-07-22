@@ -1,7 +1,7 @@
 python3 make_bedGraph.py
 
 region="TTS"
-E2="E2-24h"
+E2="E2-2h"
 FOLDER="PCAWG_MCF7_DRIP_Profiles/"$region"/"$E2
 
 for f in $FOLDER/*; do
