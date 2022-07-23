@@ -1,7 +1,7 @@
-region="TTS"
-E2="E2-2h"
+region="TSS"
+E2="Control"
 folder="PCAWG_MCF7_DRIP_Profiles/"$region"/"$E2
-rp=TES
+rp=TSS
 
 mkdir -p PCAWG_MCF7_DRIP_Profiles/Results/Matrices/reference-point/$region/$E2
 mkdir -p PCAWG_MCF7_DRIP_Profiles/Results/Images/reference-point/$region/$E2

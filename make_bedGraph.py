@@ -1,8 +1,8 @@
 import pandas as pd
 import Tools
 
-region = "tts"
-E2 = "E2-2h"
+region = "tss"
+E2 = "Control"
 Tools.create_folder("PCAWG_MCF7_DRIP_Profiles/" + region.upper() + "/" + E2 + "/")
 
 file_names = ["only_" + region + "_mutations", "active_" + region + "_mutations", 
