@@ -6,8 +6,8 @@ import plotly.graph_objects as go
 import Config
 import Tools
 
-E2 = "E2-24h"
-mcf = "MCF7-24h"
+E2 = "E2-2h"
+mcf = "MCF7-2h"
 
 def update_df(df):
 	
@@ -23,11 +23,8 @@ def update_df(df):
 
 def plot(df, titre):
 
-	bin_width = 100
-    bins = (df["data"].max() - df["data"].min()) // bin_width
-
 	fig = px.histogram(df["Mutation_C"].values,
-	                nbins=bins, title = titre)
+	                nbins=80, title = titre)
 
 	Tools.create_folder("PCAWG-MCF7-DRIP-Mutations/" + E2)
 	path = "PCAWG-MCF7-DRIP-Mutations/" + E2 + "/" + titre + ".html"

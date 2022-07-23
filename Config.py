@@ -5,11 +5,11 @@ parser = argparse.ArgumentParser()
 
 hg = "hg37"
 grch = "GRCh37"
-metedata = "PCAWG"
+metadata = "PCAWG"
 
 parser.add_argument("--dataset", 
 	type = str,
-	default = "BRCA",
+	default = "PCAWG_BRCA",
 	help = "Dataset to use")
 
 parser.add_argument("--num_signatures", 
@@ -39,7 +39,7 @@ parser.add_argument("--region",
 
 parser.add_argument("--meta",
 	type = Path,
-	default = Path("Annotations/Metadata/" + metedata + "/" + metedata + ".tsv"),
+	default = Path("Annotations/Metadata/" + metadata + "/" + metadata + ".tsv"),
 	help = "Metadata about RNA-seq from " + metadata)
 
 parser.add_argument("--gff3", 
